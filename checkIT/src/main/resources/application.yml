@@ -1,15 +1,15 @@
 spring:
   config:
     import: optional:file:.env[.properties]
-    datasource:
+  datasource:
       url: jdbc:mysql://${MYSQL_URL}:${MYSQL_PORT}/${MYSQL_DB}
       username: ${MYSQL_USER}
       password: ${MYSQL_PW}
       driver-class-name: com.mysql.cj.jdbc.Driver
 
-    sql:
-      init:
-        mode: never
+  sql:
+    init:
+      mode: never
   jpa:
     properties:
       hibernate:

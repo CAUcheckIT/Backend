@@ -52,4 +52,9 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<MonthAlarm> monthAlarmList=new ArrayList<>();
 
+    @OneToMany(mappedBy="member", cascade = CascadeType.ALL)
+    private List<Transport> transportList=new ArrayList<>();
+
+    @OneToMany(mappedBy="member", cascade = CascadeType.ALL)
+    private List<Pin> pinList=new ArrayList<>();
 }

@@ -44,4 +44,10 @@ public class Location extends BaseEntity {
 
     @OneToMany(mappedBy = "location",cascade = CascadeType.ALL)
     private List<DeviceLocation> deviceLocationList= new ArrayList<>();
+
+    @OneToMany(mappedBy="location", cascade = CascadeType.ALL)
+    private List<Transport> transportList=new ArrayList<>();
+
+    @OneToMany(mappedBy="location", cascade = CascadeType.ALL)
+    private List<Pin> pinList=new ArrayList<>();
 }
