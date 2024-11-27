@@ -6,6 +6,9 @@ import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -14,23 +17,25 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Todo extends BaseEntity {
+public class Device extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 512)
-    private String tomorrowImg;
+    @Column(nullable = false, length=100)
+    private String information;
 
-    @Column(nullable = false, length = 512)
-    private String checkImg;
+    @Column(nullable = false, length=100)
+    private String name;
 
     @Column(nullable = false)
-    private Boolean check;
+    private Boolean isLogin;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="product_id")
-    private Product product;
+    @JoinColumn(name="member_id")
+    private Member member;
 
-
+    @OneToMany(mappedBy = "device", cascade = CascadeType.ALL)
+    private List<DeviceLocation> deviceLocationList=new ArrayList<>();
 }

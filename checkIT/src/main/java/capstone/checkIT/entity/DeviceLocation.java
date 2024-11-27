@@ -14,23 +14,19 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Todo extends BaseEntity {
+public class DeviceLocation extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 512)
-    private String tomorrowImg;
-
-    @Column(nullable = false, length = 512)
-    private String checkImg;
-
     @Column(nullable = false)
-    private Boolean check;
+    private Boolean isFinished;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="product_id")
-    private Product product;
+    @JoinColumn(name="device_id")
+    private Device device;
 
-
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="location_id")
+    private Location location;
 }

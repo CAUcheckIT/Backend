@@ -7,6 +7,9 @@ import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -36,5 +39,17 @@ public class Member extends BaseEntity {
 
     @Column(nullable = false)
     private Boolean isStart;
+
+    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
+    private List<Product> productList=new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade=CascadeType.ALL)
+    private List<Device> deviceList=new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<TodoAlarm> todoAlarmList=new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<MonthAlarm> monthAlarmList=new ArrayList<>();
 
 }
