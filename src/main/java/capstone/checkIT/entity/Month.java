@@ -7,6 +7,9 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,30 +20,36 @@ import java.sql.Timestamp;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Month extends BaseEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable=false)
-    private Timestamp startDate;
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="member_id")
+    private Member member;
+
+
 
     @Column(nullable=false)
-    private Timestamp endDate;
+    private LocalDateTime startDate;
 
     @Column(nullable=false)
-    private Integer days;
+    private LocalDateTime endDate;
 
+    @Column(nullable=false)
+    private int days;
+
+    // 한달목표 문장
     @Column
     private String sentence;
 
     @Column
-    private Integer frequency;
+    private int frequency;
 
-    @Column
-    private Boolean checkDay;
+    //별도의 테이블 없이 checkDay 저장
+    @ElementCollection
+    @CollectionTable(name = "month_check_day", joinColumns = @JoinColumn(name = "month_id"))
+    @Column(name = "check_day")
+    private List<String> checkDay = new ArrayList<>();
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="product_id")
-    private Product product;
 }

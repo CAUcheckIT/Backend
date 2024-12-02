@@ -7,7 +7,6 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -17,25 +16,22 @@ import java.util.List;
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Product extends BaseEntity {
+public class LocationPicture extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length=100)
-    private String name;
-
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="member_id")
-    private Member member;
+    @Column(nullable = false, length = 255)
+    private String photoUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "todo_id", nullable = false)
     private Todo todo;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<Check> checkList = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
 
-    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true)
-    private LocationProduct locationProduct;
+//    @OneToMany(mappedBy = "locationPic", cascade = CascadeType.ALL)
+//    private List<LocationProduct> locationProducts = new ArrayList<>();
 }

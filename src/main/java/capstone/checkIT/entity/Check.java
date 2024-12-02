@@ -1,12 +1,11 @@
 package capstone.checkIT.entity;
 
 import capstone.checkIT.entity.common.BaseEntity;
+import capstone.checkIT.entity.enums.CheckContents;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-
-import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -16,22 +15,19 @@ import java.time.LocalDate;
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Todo extends BaseEntity {
+public class Check extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="member_id")
-    private Member member;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
 
-    @Column(nullable = false, length = 512)
-    private LocalDate date;
+    @Column(nullable = false)
+    private Boolean isChecked;
 
-    @Column(nullable = false, length = 512)
-    private String tomorrowImg;
-
-    @Column(nullable = false, length = 512)
-    private String checkImg;
-
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private CheckContents contents;
 }

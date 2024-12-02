@@ -6,7 +6,6 @@ import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -16,22 +15,16 @@ import java.time.LocalDate;
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Todo extends BaseEntity {
+public class Reward extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="member_id")
+    @ManyToOne
+    @JoinColumn(name = "member_id")
     private Member member;
 
-    @Column(nullable = false, length = 512)
-    private LocalDate date;
+    private String description;
 
-    @Column(nullable = false, length = 512)
-    private String tomorrowImg;
-
-    @Column(nullable = false, length = 512)
-    private String checkImg;
-
+    private int scoreChange;
 }
