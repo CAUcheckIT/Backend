@@ -6,6 +6,8 @@ import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.time.LocalDate;
+
 @Entity
 @Getter
 @Setter
@@ -19,18 +21,17 @@ public class Todo extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="member_id")
+    private Member member;
+
+    @Column(nullable = false, length = 512)
+    private LocalDate date;
+
     @Column(nullable = false, length = 512)
     private String tomorrowImg;
 
     @Column(nullable = false, length = 512)
     private String checkImg;
-
-    @Column(nullable = false)
-    private Boolean check;
-
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="product_id")
-    private Product product;
-
 
 }
