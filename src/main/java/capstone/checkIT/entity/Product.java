@@ -29,9 +29,10 @@ public class Product extends BaseEntity {
     @JoinColumn(name="member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<Month> monthList= new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "todo_id", nullable = false)
+    private Todo todo;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<Todo> todoList=new ArrayList<>();
+//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+//    private List<Check> checkList = new ArrayList<>();
 }
