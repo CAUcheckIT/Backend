@@ -1,6 +1,6 @@
-package capstone.checkIT.openai.response;
+package capstone.checkIT.dto.openAiDTO.response;
 
-import capstone.checkIT.openai.dto.TextMessage;
+import capstone.checkIT.dto.openAiDTO.TextMessage;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

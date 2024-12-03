@@ -1,4 +1,4 @@
-package capstone.checkIT.openai.response;
+package capstone.checkIT.dto.openAiDTO.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;

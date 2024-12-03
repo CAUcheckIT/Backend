@@ -1,7 +1,7 @@
-package capstone.checkIT.openai.request;
+package capstone.checkIT.dto.openAiDTO.request;
 
-import capstone.checkIT.openai.dto.Message;
-import capstone.checkIT.openai.dto.TextMessage;
+import capstone.checkIT.dto.openAiDTO.Message;
+import capstone.checkIT.dto.openAiDTO.TextMessage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Collections;
 import java.util.List;

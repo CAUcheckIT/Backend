@@ -1,8 +1,8 @@
-package capstone.checkIT.openai.request;
+package capstone.checkIT.dto.openAiDTO.request;
 
 import java.util.List;
 
-import capstone.checkIT.openai.dto.Message;
+import capstone.checkIT.dto.openAiDTO.Message;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
