@@ -1,4 +1,4 @@
 package capstone.checkIT.service.memberService;
 
-public class MemberServiceImpl {
+public class MemberServiceImpl implements MemberService {
 }

@@ -1,4 +1,4 @@
 package capstone.checkIT.service.locationService;
 
-public class LocationServiceImpl {
+public class LocationServiceImpl implements LocationService {
 }

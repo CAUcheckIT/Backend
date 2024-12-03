@@ -1,4 +1,4 @@
 package capstone.checkIT.service.deviceService;
 
-public class DeviceServiceImpl {
+public class DeviceServiceImpl implements DeviceService {
 }

@@ -1,4 +1,4 @@
 package capstone.checkIT.service.monthService;
 
-public class MonthServiceImpl {
+public class MonthServiceImpl implements MonthService {
 }

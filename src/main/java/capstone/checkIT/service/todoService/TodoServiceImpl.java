@@ -1,4 +1,4 @@
 package capstone.checkIT.service.todoService;
 
-public class TodoServiceImpl {
+public class TodoServiceImpl implements TodoService {
 }

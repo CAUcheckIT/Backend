@@ -1,4 +1,4 @@
 package capstone.checkIT.service.checkService;
 
-public class CheckServiceImpl {
+public class CheckServiceImpl implements CheckService{
 }

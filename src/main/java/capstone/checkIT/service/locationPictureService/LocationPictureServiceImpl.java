@@ -1,4 +1,4 @@
 package capstone.checkIT.service.locationPictureService;
 
-public class LocationPictureServiceImpl {
+public class LocationPictureServiceImpl implements LocationPictureService {
 }
