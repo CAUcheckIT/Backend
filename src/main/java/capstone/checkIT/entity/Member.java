@@ -1,6 +1,7 @@
 package capstone.checkIT.entity;
 
 import capstone.checkIT.entity.common.BaseEntity;
+import capstone.checkIT.entity.enums.Role;
 import capstone.checkIT.entity.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
@@ -27,6 +28,9 @@ public class Member extends BaseEntity {
     @Column(nullable = false, length=100)
     private String name;
 
+    @Column(nullable = false, length = 512)
+    private String email;
+
     @Column(nullable =false, length = 512)
     private String address;
 
@@ -34,11 +38,18 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Column(nullable = false, length=100)
+    @Column(length=100)
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @Column(nullable = false)
     private Boolean isStart;
+
+    public void encodePassword(String password){
+        this.password = password;
+    }
 
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
     private List<Product> productList=new ArrayList<>();
