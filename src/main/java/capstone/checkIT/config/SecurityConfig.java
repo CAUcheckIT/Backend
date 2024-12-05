@@ -18,8 +18,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 //"/health" 추가 해야 할 수도
+                .csrf(csrf->csrf.disable())
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/home", "/signup", "/members/signup", "/css/**").permitAll()
+                        .requestMatchers("/**", "/swagger-ui/**", "/v3/api-docs/**", "/members/signup", "/css/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )

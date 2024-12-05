@@ -28,6 +28,9 @@ public class Member extends BaseEntity {
     @Column(nullable = false, length=100)
     private String name;
 
+    @Column(nullable = false, length = 512)
+    private String email;
+
     @Column(nullable =false, length = 512)
     private String address;
 
@@ -35,7 +38,7 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Column(nullable = false, length=100)
+    @Column(length=100)
     private String password;
 
     @Enumerated(EnumType.STRING)
