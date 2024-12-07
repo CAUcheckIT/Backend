@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ChatGPTResponse {
     @JsonProperty("choices")
-    private List<capstone.checkIT.dto.openAiDTO.response.Choice> choices;
+    private List<capstone.checkIT.DTO.openAiDTO.response.Choice> choices;
 }
