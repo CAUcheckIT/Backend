@@ -1,4 +1,4 @@
-package capstone.checkIT.dto.openAiDTO.request;
+package capstone.checkIT.DTO.openAiDTO.request;
 
 import capstone.checkIT.dto.openAiDTO.Message;
 import capstone.checkIT.dto.openAiDTO.TextMessage;

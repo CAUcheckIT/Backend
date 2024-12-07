@@ -57,6 +57,8 @@ public class MemberResponseDTO {
 
         private Boolean isStart;
 
+        private String deviceName;
+
         private List<MonthResponse> months;
 
         @Getter
