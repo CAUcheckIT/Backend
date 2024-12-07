@@ -8,6 +8,7 @@ import capstone.checkIT.converter.MemberConverter;
 import capstone.checkIT.entity.Member;
 import capstone.checkIT.DTO.MemberDTO.MemberRequestDTO;
 import capstone.checkIT.entity.Month;
+import capstone.checkIT.exception.GeneralException;
 import capstone.checkIT.repository.MemberRepository;
 import capstone.checkIT.repository.MonthRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +36,7 @@ public class MemberCommandServiceImpl implements MemberCommandService{
     public MemberResponseDTO.JoinResultDTO joinMember(MemberRequestDTO.JoinDto request) {
 
         memberRepository.findByEmail(request.getEmail())
-                .ifPresent(member-> {throw new TempHandler(ErrorStatus.MEMBER_DUPLICATE);
+                .ifPresent(member-> {throw new GeneralException(ErrorStatus.MEMBER_DUPLICATE);
                 });
 
         Member member=Member.builder()
@@ -70,7 +71,7 @@ public class MemberCommandServiceImpl implements MemberCommandService{
 
     public MemberResponseDTO.LoginResultDTO loginMember(MemberRequestDTO.LoginDto request){
         Member member=memberRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new TempHandler(ErrorStatus.LOGIN_ERROR_EMAIL));
+                .orElseThrow(() -> new GeneralException(ErrorStatus.LOGIN_ERROR_EMAIL));
 
         if(!passwordEncoder.matches(request.getPassword(), member.getPassword())){
             throw new TempHandler(ErrorStatus.LOGIN_ERROR_PW);
