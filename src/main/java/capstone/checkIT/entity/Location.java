@@ -30,8 +30,8 @@ public class Location extends BaseEntity {
     @Column(nullable=false, precision=10, scale=5)
     private BigDecimal longitude;
 
-    @Column(nullable = false)
-    private Boolean isFinish;
+    /*@Column(nullable = false)
+    private Boolean isFinish;*/
 
     @Column(nullable = false, precision = 5, scale = 2)
     private BigDecimal velocity;
