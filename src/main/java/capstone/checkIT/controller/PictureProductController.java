@@ -1,6 +1,6 @@
 package capstone.checkIT.controller;
 
-/*
+
 import java.io.IOException;
 
 import capstone.checkIT.dto.openAiDTO.response.ChatGPTResponse;
@@ -14,9 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api")
-@RequiredArgsConstructor*/
+@RequiredArgsConstructor
 public class PictureProductController {
-    /*private final PictureProductService pictureProductService;
+    private final PictureProductService pictureProductService;
 
     @PostMapping("/image")
     public String imageAnalysis(@RequestParam MultipartFile image)
@@ -30,5 +30,5 @@ public class PictureProductController {
 //    public String textAnalysis(@RequestParam String requestText) {
 //        ChatGPTResponse response = pictureProductService.requestTextAnalysis(requestText);
 //        return response.getChoices().get(0).getMessage().getContent();
-//    }*/
+//    }
 }
