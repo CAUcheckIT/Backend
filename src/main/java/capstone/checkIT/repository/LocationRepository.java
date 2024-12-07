@@ -1,4 +1,7 @@
 package capstone.checkIT.repository;
 
-public interface LocationRepository {
+import capstone.checkIT.entity.Location;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface LocationRepository extends JpaRepository<Location, Long> {
 }
