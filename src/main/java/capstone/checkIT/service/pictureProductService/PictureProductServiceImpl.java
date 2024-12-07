@@ -2,8 +2,8 @@ package capstone.checkIT.service.pictureProductService;
 
 import java.io.IOException;
 
-import capstone.checkIT.dto.openAiDTO.request.ChatGPTRequest;
-import capstone.checkIT.dto.openAiDTO.response.ChatGPTResponse;
+import capstone.checkIT.DTO.openAiDTO.request.ChatGPTRequest;
+import capstone.checkIT.DTO.openAiDTO.response.ChatGPTResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;

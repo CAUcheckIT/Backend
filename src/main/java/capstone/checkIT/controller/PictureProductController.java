@@ -3,7 +3,7 @@ package capstone.checkIT.controller;
 
 import java.io.IOException;
 
-import capstone.checkIT.dto.openAiDTO.response.ChatGPTResponse;
+import capstone.checkIT.DTO.openAiDTO.response.ChatGPTResponse;
 import capstone.checkIT.service.pictureProductService.PictureProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;

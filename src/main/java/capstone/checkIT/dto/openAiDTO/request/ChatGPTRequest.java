@@ -1,7 +1,7 @@
-package capstone.checkIT.dto.openAiDTO.request;
+package capstone.checkIT.DTO.openAiDTO.request;
 
-import capstone.checkIT.dto.openAiDTO.Message;
-import capstone.checkIT.dto.openAiDTO.TextMessage;
+import capstone.checkIT.DTO.openAiDTO.Message;
+import capstone.checkIT.DTO.openAiDTO.TextMessage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Collections;
 import java.util.List;

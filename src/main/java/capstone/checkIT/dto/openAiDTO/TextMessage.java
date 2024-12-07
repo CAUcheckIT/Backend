@@ -1,4 +1,4 @@
-package capstone.checkIT.dto.openAiDTO;
+package capstone.checkIT.DTO.openAiDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TextMessage extends Message {
+public class TextMessage extends capstone.checkIT.dto.openAiDTO.Message {
     private String content;
 
     public TextMessage(String role, String content) {

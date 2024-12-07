@@ -1,4 +1,4 @@
-package capstone.checkIT.dto.openAiDTO.response;
+package capstone.checkIT.DTO.openAiDTO.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ChatGPTResponse {
     @JsonProperty("choices")
-    private List<Choice> choices;
+    private List<capstone.checkIT.dto.openAiDTO.response.Choice> choices;
 }
