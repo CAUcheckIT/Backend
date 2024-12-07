@@ -25,18 +25,16 @@ public class Month extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="member_id")
+    @JoinColumn(name="member_id", nullable=false)
     private Member member;
 
-
-
-    @Column(nullable=false)
+    @Column
     private LocalDateTime startDate;
 
-    @Column(nullable=false)
+    @Column
     private LocalDateTime endDate;
 
-    @Column(nullable=false)
+    @Column
     private int days;
 
     // 한달목표 문장
@@ -45,6 +43,9 @@ public class Month extends BaseEntity {
 
     @Column
     private int frequency;
+
+    @Column
+    private String productName;
 
     //별도의 테이블 없이 checkDay 저장
     @ElementCollection

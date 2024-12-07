@@ -44,7 +44,7 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT false" )
     private Boolean isStart;
 
     public void encodePassword(String password){
@@ -53,6 +53,17 @@ public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
     private List<Product> productList=new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Month> monthList = new ArrayList<>(); // 빈 리스트로 초기화
+
+    public void addMonth(Month month) {
+        if (this.monthList == null) { // monthList가 null인지 확인
+            this.monthList = new ArrayList<>(); // 초기화
+        }
+        this.monthList.add(month);
+        month.setMember(this);
+    }
 
     @OneToMany(mappedBy = "member", cascade=CascadeType.ALL)
     private List<Device> deviceList=new ArrayList<>();

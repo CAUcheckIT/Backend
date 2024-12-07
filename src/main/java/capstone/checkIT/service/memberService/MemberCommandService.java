@@ -1,8 +1,7 @@
 package capstone.checkIT.service.memberService;
 
-import capstone.checkIT.DTO.MemberRequestDTO;
-import capstone.checkIT.DTO.MemberResponseDTO;
-import capstone.checkIT.entity.Member;
+import capstone.checkIT.DTO.MemberDTO.MemberRequestDTO;
+import capstone.checkIT.DTO.MemberDTO.MemberResponseDTO;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface MemberCommandService {
