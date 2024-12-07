@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class TextContent extends capstone.checkIT.dto.openAiDTO.request.Content {
+public class TextContent extends capstone.checkIT.DTO.openAiDTO.request.Content {
     private String text;
 
     public TextContent(String type, String text) {

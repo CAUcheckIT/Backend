@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TextMessage extends capstone.checkIT.dto.openAiDTO.Message {
+public class TextMessage extends capstone.checkIT.DTO.openAiDTO.Message {
     private String content;
 
     public TextMessage(String role, String content) {
