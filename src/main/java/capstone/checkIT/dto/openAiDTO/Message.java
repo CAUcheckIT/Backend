@@ -1,4 +1,4 @@
-package capstone.checkIT.dto.openAiDTO;
+package capstone.checkIT.DTO.openAiDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

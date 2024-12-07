@@ -1,4 +1,4 @@
-package capstone.checkIT.dto.openAiDTO.request;
+package capstone.checkIT.DTO.openAiDTO.request;
 
 import java.util.List;
 
@@ -11,9 +11,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class ImageMessage extends Message {
-    private List<Content> content;
+    private List<capstone.checkIT.dto.openAiDTO.request.Content> content;
 
-    public ImageMessage(String role, List<Content> content) {
+    public ImageMessage(String role, List<capstone.checkIT.dto.openAiDTO.request.Content> content) {
         super(role);
         this.content = content;
     }
