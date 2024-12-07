@@ -20,7 +20,8 @@ public enum ErrorStatus implements BaseCode {
     TOKEN_UNVALID(HttpStatus.UNAUTHORIZED, "TOKEN4001", "유효하지 않은 토큰입니다"),
     TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "TOKEN4002", "토큰이 만료되었습니다"),
     TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, "TOKEN4003", "인증이 필요한 요청입니다"),
-    TOKEN_UNKNOWN_ERROR(HttpStatus.UNAUTHORIZED, "TOKEN500", "토큰이 존재하지 않습니다.");
+    TOKEN_UNKNOWN_ERROR(HttpStatus.UNAUTHORIZED, "TOKEN500", "토큰이 존재하지 않습니다."),
+    MONTH_NOT_EXIST(HttpStatus.BAD_REQUEST, "MONTH4001","해당하는 한달 목표가 존재하지 않습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
