@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ImageContent extends capstone.checkIT.dto.openAiDTO.request.Content {
+public class ImageContent extends capstone.checkIT.DTO.openAiDTO.request.Content {
     private ImageUrl image_url;
 
     public ImageContent(String type, ImageUrl image_url) {
