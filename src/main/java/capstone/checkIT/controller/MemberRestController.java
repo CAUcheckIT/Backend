@@ -1,10 +1,8 @@
 package capstone.checkIT.controller;
 
-import capstone.checkIT.DTO.MemberRequestDTO;
-import capstone.checkIT.DTO.MemberResponseDTO;
+import capstone.checkIT.DTO.MemberDTO.MemberRequestDTO;
+import capstone.checkIT.DTO.MemberDTO.MemberResponseDTO;
 import capstone.checkIT.apipayLoad.ApiResponse;
-import capstone.checkIT.converter.MemberConverter;
-import capstone.checkIT.entity.Member;
 import capstone.checkIT.service.memberService.MemberCommandService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -36,6 +34,7 @@ public class MemberRestController {
         MemberResponseDTO.LoginResultDTO response= memberCommandService.loginMember(request);
         return ApiResponse.onSuccess(response);
     }
+
 
 
 
