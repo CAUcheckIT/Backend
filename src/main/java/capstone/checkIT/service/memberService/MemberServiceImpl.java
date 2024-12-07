@@ -1,5 +1,6 @@
 package capstone.checkIT.service.memberService;
 
+import capstone.checkIT.DTO.MemberDTO.MemberRequestDTO;
 import capstone.checkIT.DTO.MemberDTO.MemberResponseDTO;
 import capstone.checkIT.apipayLoad.code.status.ErrorStatus;
 import capstone.checkIT.apipayLoad.handler.TempHandler;
@@ -25,6 +26,21 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new TempHandler(ErrorStatus.LOGIN_ERROR_EMAIL));
 
+
+        return MyInfoConverter.toMyInfoResponseDTO(member);
+    }
+
+    @Override
+    public MemberResponseDTO.MypageDTO updateMyInfo(String accessToken, MemberRequestDTO.MyDetailInfoDto myDetailInfoDto){
+        Long memberId = jwtManager.validateJwt(accessToken);
+        Member member = memberRepository.findById(memberId)
+               .orElseThrow(() -> new TempHandler(ErrorStatus.LOGIN_ERROR_EMAIL));
+
+        // update code
+        member.setName(myDetailInfoDto.getName());
+        member.setAddress(myDetailInfoDto.getAddress());
+
+        memberRepository.save(member);
 
         return MyInfoConverter.toMyInfoResponseDTO(member);
     }

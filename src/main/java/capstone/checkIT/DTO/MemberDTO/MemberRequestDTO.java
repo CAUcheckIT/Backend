@@ -52,4 +52,13 @@ public class MemberRequestDTO {
 
         private String password; //비��번호
     }
+
+    @Getter
+    @Setter
+    @Builder
+    public static class MyDetailInfoDto{
+        private String name;
+
+        private String address;
+    }
 }
