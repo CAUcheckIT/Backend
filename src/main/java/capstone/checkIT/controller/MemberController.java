@@ -29,7 +29,7 @@ public class MemberController {
         return ApiResponse.onSuccess(myPageDTO);
     }
 
-    @PatchMapping("/my/upadte")
+    @PatchMapping("/my/update")
     @Operation(summary = "내 정보 수정 API",
                 description = "내 정보 수정 API", security = {@SecurityRequirement(name="session-token")})
     public ApiResponse<MemberResponseDTO.MypageDTO> updateMyInfo(HttpServletRequest token, @RequestBody @Valid MemberRequestDTO.MyDetailInfoDto myDetailInfoDto) throws Exception {

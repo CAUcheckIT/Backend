@@ -20,7 +20,14 @@ public enum ErrorStatus implements BaseCode {
     TOKEN_UNVALID(HttpStatus.UNAUTHORIZED, "TOKEN4001", "유효하지 않은 토큰입니다"),
     TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "TOKEN4002", "토큰이 만료되었습니다"),
     TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, "TOKEN4003", "인증이 필요한 요청입니다"),
-    TOKEN_UNKNOWN_ERROR(HttpStatus.UNAUTHORIZED, "TOKEN500", "토큰이 존재하지 않습니다.");
+    TOKEN_UNKNOWN_ERROR(HttpStatus.UNAUTHORIZED, "TOKEN500", "토큰이 존재하지 않습니다."),
+
+
+
+    // DEVICE
+    DEVICE_NOT_FOUND(HttpStatus.UNAUTHORIZED, "DEVICE4001", "해당 디바이스가 존재하지 않습니다."),
+    DEVICE_UNVALID(HttpStatus.UNAUTHORIZED, "DEVICE4002", "현재 접속중인 디바이스가 아닙니다.");
+
 
     // Device
 
