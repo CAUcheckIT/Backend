@@ -12,6 +12,7 @@ import capstone.checkIT.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -44,6 +45,19 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(member);
 
         return MyInfoConverter.toMyInfoResponseDTO(member);
+    }
+
+    @Override
+    public void startButton(String accessToken){
+        Long memberId = jwtManager.validateJwt(accessToken);
+        Member member = memberRepository.findById(memberId)
+               .orElseThrow(() -> new GeneralException(ErrorStatus.LOGIN_ERROR_EMAIL));
+
+        // update code
+        member.setIsStart(true);
+        member.setStartTime(new Timestamp(System.currentTimeMillis()));
+
+        memberRepository.save(member);
     }
 
 
