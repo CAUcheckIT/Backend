@@ -37,4 +37,31 @@ public class MonthController {
         MonthResponseDTO.CreateMonthDto response= monthService.updateMonth(accessToken, monthId, request);
         return ApiResponse.onSuccess(response);
     }
+
+    @PatchMapping("/achieves/{monthId}")
+    @Operation(summary="한달 목표 하루 달성 API",
+            description="한달 목표 하루 달성 API",security = {@SecurityRequirement(name="session-token")} )
+    public ApiResponse<MonthResponseDTO.getMonthDto> achieveDay(HttpServletRequest token, @PathVariable Long monthId, @RequestParam boolean newIsStart){
+        String accessToken = jwtManager.getToken(token);
+        MonthResponseDTO.getMonthDto response = monthService.achieveDay(accessToken, monthId, newIsStart);
+        return ApiResponse.onSuccess(response);
+    }
+
+    @DeleteMapping("/{monthId}")
+    @Operation(summary="한달 목표 삭제 API",
+            description="한달 목표 삭제 API",security = {@SecurityRequirement(name="session-token")} )
+    public ApiResponse<String> deleteMonth(HttpServletRequest token, @PathVariable Long monthId){
+        String accessToken = jwtManager.getToken(token);
+        monthService.deleteMonth(accessToken, monthId);
+        return ApiResponse.onSuccess("삭제 성공");
+    }
+
+    @GetMapping("/{monthId}")
+    @Operation(summary="한달 목표 조회 API",
+            description="한달 목표 조회 API",security = {@SecurityRequirement(name="session-token")} )
+    public ApiResponse<MonthResponseDTO.getMonthDto> getMonth(HttpServletRequest token, @PathVariable Long monthId){
+        String accessToken = jwtManager.getToken(token);
+        MonthResponseDTO.getMonthDto response = monthService.getMonth(accessToken, monthId);
+        return ApiResponse.onSuccess(response);
+    }
 }
