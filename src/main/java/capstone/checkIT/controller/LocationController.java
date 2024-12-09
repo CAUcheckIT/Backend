@@ -3,6 +3,7 @@ package capstone.checkIT.controller;
 import capstone.checkIT.DTO.LocationDTO.LocationRequestDTO;
 import capstone.checkIT.apipayLoad.ApiResponse;
 import capstone.checkIT.config.JwtManager;
+import capstone.checkIT.service.deviceLocationService.DeviceLocationService;
 import capstone.checkIT.service.locationService.LocationService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 public class LocationController {
 
     private final LocationService locationService;
+    private final DeviceLocationService deviceLocationService;
     private final JwtManager jwtManager;
 
     // 위치 데이터 저장
@@ -30,5 +32,10 @@ public class LocationController {
         log.info("Location data saved successfully.");
         return ApiResponse.onSuccess("위치 저장 완료");
     }
+
+    // 가장 최신 경로 반환
+
+
+
 
 }
