@@ -7,6 +7,7 @@ import capstone.checkIT.apipayLoad.handler.TempHandler;
 import capstone.checkIT.config.JwtManager;
 import capstone.checkIT.converter.MyInfoConverter;
 import capstone.checkIT.entity.Member;
+import capstone.checkIT.exception.GeneralException;
 import capstone.checkIT.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class MemberServiceImpl implements MemberService {
 
         Long memberId = jwtManager.validateJwt(accessToken);
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new TempHandler(ErrorStatus.LOGIN_ERROR_EMAIL));
+                .orElseThrow(() -> new GeneralException(ErrorStatus.LOGIN_ERROR_EMAIL));
 
 
         return MyInfoConverter.toMyInfoResponseDTO(member);
@@ -34,7 +35,7 @@ public class MemberServiceImpl implements MemberService {
     public MemberResponseDTO.MypageDTO updateMyInfo(String accessToken, MemberRequestDTO.MyDetailInfoDto myDetailInfoDto){
         Long memberId = jwtManager.validateJwt(accessToken);
         Member member = memberRepository.findById(memberId)
-               .orElseThrow(() -> new TempHandler(ErrorStatus.LOGIN_ERROR_EMAIL));
+               .orElseThrow(() -> new GeneralException(ErrorStatus.LOGIN_ERROR_EMAIL));
 
         // update code
         member.setName(myDetailInfoDto.getName());
