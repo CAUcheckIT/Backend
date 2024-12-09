@@ -15,5 +15,4 @@ public class LocationRequestDTO {
     private BigDecimal longitude; // 경도
     private BigDecimal velocity;  // 속도
     private Timestamp time;  // 기록 시간
-    private Timestamp startTime;  // 시작 시간
 }

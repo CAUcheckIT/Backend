@@ -47,6 +47,7 @@ public class DeviceLocationServiceImpl implements DeviceLocationService{
         if (member.getIsStart() != null && member.getIsStart()) {
             member.setIsStart(false);
             memberRepository.save(member);
+            member.setEndTime(new Timestamp(System.currentTimeMillis())); // 현재 시간 설정
             log.info("Member's isStart updated to false for memberId: {}", memberId);
         }
 
