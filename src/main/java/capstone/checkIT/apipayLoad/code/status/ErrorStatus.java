@@ -31,7 +31,8 @@ public enum ErrorStatus implements BaseCode {
 
 
     // Location
-    START_TIME_NOT_FOUND(HttpStatus.BAD_REQUEST, "STARTTIME4001", "해당 시작시간이 존재하지 않습니다.");
+    START_TIME_NOT_FOUND(HttpStatus.BAD_REQUEST, "STARTTIME4001", "해당 시작시간이 존재하지 않습니다."),
+    LOCATION_NOT_FOUND(HttpStatus.BAD_REQUEST, "LOCATION4001", "위치정보를 찾을 수 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

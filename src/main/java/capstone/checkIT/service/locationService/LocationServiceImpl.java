@@ -17,6 +17,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -70,6 +74,45 @@ public class LocationServiceImpl implements LocationService {
         deviceLocationRepository.save(deviceLocation);
 
         log.info("Location data saved successfully for deviceId: {}", request.getId());
+    }
+
+
+    // 최신경로 반환 서비스
+    public List<LocationResponseDTO> getLatestRoute(String accessToken, Long deviceId) {
+        log.info("Fetching latest route for deviceId: {}", deviceId);
+
+        // 1. JWT 토큰에서 memberId 추출 및 검증
+        Long memberId = jwtManager.validateJwt(accessToken);
+
+        // 2. 디바이스 검증
+        Device device = deviceRepository.findById(deviceId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.DEVICE_NOT_FOUND));
+
+        // 3. 디바이스 소유자 검증
+        if(!deviceService.isOwner(accessToken, memberId)){
+            throw new GeneralException(ErrorStatus.DEVICE_UNVALID);
+        }
+
+        // 4. 가장 최신 startTime 조회
+        Timestamp latestStartTime = locationRepository.findLatestStartTimeByDeviceId(deviceId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.LOCATION_NOT_FOUND));
+
+        log.info("Latest startTime found: {}", latestStartTime);
+
+        // 5. 최신 startTime과 관련된 Location 리스트 조회
+        List<Location> locations = locationRepository.findByStartTime(latestStartTime);
+
+        // 6. Location → LocationResponseDTO 변환 및 반환
+        return locations.stream()
+                .map(location -> new LocationResponseDTO(
+                        location.getId(),
+                        location.getLatitude(),
+                        location.getLongitude(),
+                        location.getVelocity(),
+                        location.getTime(),
+                        location.getStartTime()
+                ))
+                .collect(Collectors.toList());
     }
 }
 
