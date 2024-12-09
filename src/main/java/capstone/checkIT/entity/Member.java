@@ -8,6 +8,7 @@ import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,10 +50,10 @@ public class Member extends BaseEntity {
     private Boolean isStart;
 
     @Column
-    private LocalDateTime startTime;
+    private Timestamp startTime;
 
     @Column
-    private LocalDateTime endTime;
+    private Timestamp endTime;
 
 
     public void encodePassword(String password){
