@@ -7,7 +7,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.math.BigDecimal;
-import java.security.Timestamp;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,14 +30,14 @@ public class Location extends BaseEntity {
     @Column(nullable=false, precision=10, scale=5)
     private BigDecimal longitude;
 
-    @Column(nullable = false)
-    private Boolean isFinish;
+    /*@Column(nullable = false)
+    private Boolean isFinish;*/
 
     @Column(nullable = false, precision = 5, scale = 2)
     private BigDecimal velocity;
 
     @Column
-    private Timestamp timestamp;
+    private Timestamp time;
 
     @Column
     private Timestamp startTime;
