@@ -105,7 +105,7 @@ jobs:
         id: deploy-dev
         if: contains(github.ref, 'dev')
         with:
-          host: ${{ secrets.HOST_DEV }} # EC2 퍼블릭 IPv4 DNS
+          host: ${{ secrets.HOST_DEV }} ## EC2 퍼블릭 IPv4 DNS
           username: ${{ secrets.USERNAME }} # #ubuntu#
           port: 22
           key: ${{ secrets.PRIVATE_KEY }}
