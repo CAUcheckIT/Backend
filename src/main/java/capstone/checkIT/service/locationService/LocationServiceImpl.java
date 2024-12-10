@@ -59,7 +59,7 @@ public class LocationServiceImpl implements LocationService {
                 .longitude(request.getLongitude())
                 .velocity(request.getVelocity())
                 .time(request.getTime())
-                .startTime(request.getStartTime())
+                .startTime(member.getStartTime())
                 .build();
 
         // Device와 Location의 연관 관계 설정

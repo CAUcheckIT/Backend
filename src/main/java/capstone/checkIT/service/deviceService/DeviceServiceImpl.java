@@ -57,6 +57,10 @@ public class DeviceServiceImpl implements DeviceService {
         // 해당 멤버의 디바이스 조회
         List<Device> devices = deviceRepository.findByMemberId(memberId);
 
+        if (devices.isEmpty()) {
+            throw new GeneralException(ErrorStatus.DEVICE_NOT_FOUND);
+        }
+
         // 응답 DTO로 변환
         return devices.stream()
                 .map(device -> DeviceResponseDTO.builder()
