@@ -62,6 +62,8 @@ jobs:
          # touch ./application-prod.yml
          # echo "${{ secrets.YML_PROD }}" > ./application-prod.yml
        # shell: bash
+      - name: Grant execute permission for Gradle wrapper
+        run: chmod +x ./gradlew
 
       # gradle build
       - name: Build with Gradle
