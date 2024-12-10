@@ -15,6 +15,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Table(name = "check_table")
 public class Check extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
