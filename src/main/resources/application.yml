@@ -10,6 +10,9 @@ spring:
       password: ${MYSQL_PW}
       driver-class-name: com.mysql.cj.jdbc.Driver
 
+
+
+
   servlet:
     multipart:
       enabled: true
@@ -21,6 +24,8 @@ spring:
   jpa:
     properties:
       hibernate:
+        naming:
+          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         dialect: org.hibernate.dialect.MySQL8Dialect
         show_sql: true
         format_sql: true
