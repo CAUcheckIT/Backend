@@ -1,6 +1,7 @@
 package capstone.checkIT.repository;
 
 import capstone.checkIT.entity.Location;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,5 +22,5 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
 
     @Query("SELECT l FROM Location l JOIN DeviceLocation dl ON l.id = dl.location.id " +
             "WHERE dl.device.id = :deviceId ORDER BY l.time DESC")
-    List<Location> findLatestLocationsByDeviceId(@Param("deviceId") Long deviceId);
+    List<Location> findLatestLocationsByDeviceId(@Param("deviceId") Long deviceId, Pageable pageable);
 }

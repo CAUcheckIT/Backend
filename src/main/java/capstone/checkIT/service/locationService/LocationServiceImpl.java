@@ -14,11 +14,14 @@ import capstone.checkIT.DTO.LocationDTO.*;
 import capstone.checkIT.repository.MemberRepository;
 import capstone.checkIT.service.deviceService.DeviceService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -87,37 +90,54 @@ public class LocationServiceImpl implements LocationService {
     }
 
     public List<LocationResponseDTO> processLocationData(Long deviceId) {
-        // 최근 위치 데이터 가져오기
-        List<Location> recentLocations = locationRepository.findLatestLocationsByDeviceId(deviceId);
+        // 최근 위치 데이터 가져오기: 10개
+        Pageable pageable = PageRequest.of(0, 10); // 첫 페이지, 최대 10개
+        List<Location> recentLocations = locationRepository.findLatestLocationsByDeviceId(deviceId, pageable);
 
-        // 데이터가 부족하면 모든 데이터에 "unknown" 태그를 설정
+        // 데이터가 부족하면 모든 데이터에 "unknown" 태그를 유지
         if (recentLocations.size() < MIN_DATA_POINTS) {
-            log.info("Not enough location data. Marking all as unknown.");
-            recentLocations.forEach(location -> {
-                location.setTag("unknown"); // "unknown" 태그 설정
-                locationRepository.save(location); // 저장
-            });
+            log.info("Not enough location data. Keeping all tags as unknown.");
             return recentLocations.stream()
-                    .map(location -> mapToResponse(location, "unknown"))
+                    .map(location -> mapToResponse(location, location.getTag())) // 기존 태그 유지
                     .collect(Collectors.toList());
         }
 
         // 판단 로직 실행
         String tag = processRecentLocations(recentLocations);
 
+        // 판단된 태그를 업데이트할 데이터만 필터링
+        List<Location> locationsToUpdate;
+        if ("bus".equals(tag) || "subway".equals(tag)) {
+            // 최근 3개의 태그만 변경
+            locationsToUpdate = recentLocations.stream()
+                    .sorted(Comparator.comparing(Location::getTime).reversed()) // 최신순으로 정렬
+                    .limit(MIN_DATA_POINTS) // 상위 3개만 가져옴
+                    .collect(Collectors.toList());
+        } else if ("stationary".equals(tag)) {
+            // 최근 10개의 태그를 변경 (stationary의 경우)
+            locationsToUpdate = recentLocations;
+        } else {
+            // 다른 경우는 태그를 변경하지 않음
+            locationsToUpdate = List.of();
+        }
+
         // 판단된 태그를 각 Location 엔티티에 설정 및 저장
-        recentLocations.forEach(location -> {
+        locationsToUpdate.forEach(location -> {
             location.setTag(tag); // 판단된 태그 설정
             locationRepository.save(location); // 저장
         });
 
         // 결과 데이터를 LocationResponseDTO로 변환 및 반환
         return recentLocations.stream()
-                .map(location -> mapToResponse(location, tag))
+                .map(location -> mapToResponse(location, location.getTag())) // 기존 태그 사용
                 .collect(Collectors.toList());
     }
 
     public String processRecentLocations(List<Location> recentLocations) {
+        List<Location> sortedLocations = recentLocations.stream()
+                .sorted(Comparator.comparing(Location::getTime)) // 시간순 정렬
+                .collect(Collectors.toList());
+
         Location first = recentLocations.get(0);
         Location second = recentLocations.get(1);
         Location third = recentLocations.get(2);
@@ -150,8 +170,16 @@ public class LocationServiceImpl implements LocationService {
         double distance2 = calculateDistance(second, third);
         double totalDistance = distance1 + distance2;
 
-        long totalTimeMillis = third.getTime().getTime() - first.getTime().getTime();
+        long totalTimeMillis = first.getTime().getTime() - third.getTime().getTime();
+        //
+        log.info("thirdtime: {}, firsttime: {}", third.getTime(), first.getTime());
+        log.info("thirdtime: {}, firsttime: {}", third.getTime().getTime(), first.getTime().getTime());
+        //
         double averageSpeed = (totalDistance / (totalTimeMillis / 1000.0)) * 3.6; // m/s -> km/h
+
+        // 디버깅 출력
+        log.info("Distance1: {}, Distance2: {}, TotalDistance: {}", distance1, distance2, totalDistance);
+        log.info("TotalTimeMillis: {}, AverageSpeed: {}", totalTimeMillis, averageSpeed);
 
         return BUS_SPEED_MIN <= averageSpeed && averageSpeed <= BUS_SPEED_MAX;
     }
