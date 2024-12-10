@@ -39,7 +39,7 @@ jobs:
         with:
           files: 'src/main/resources/application.yml'
         env:
-#          spring.datasource.url: ${{ secrets.MYSQL_URL }}
+          spring.datasource.url: ${{ secrets.MYSQL_URL }}
           spring.datasource.username: ${{ secrets.MYSQL_USER }}
           spring.datasource.password: ${{ secrets.MYSQL_PW }}
           openai.api.key: ${{ secrets.OPENAI_API_KEY }}
