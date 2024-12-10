@@ -10,4 +10,5 @@ public class DeviceResponseDTO {
     private String information; // 장치 정보
     private String name;        // 장치 이름
     private Long memberId;      // 사용자 ID
+    private boolean isLogin;
 }

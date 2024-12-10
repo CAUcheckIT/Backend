@@ -83,7 +83,7 @@ public class LocationServiceImpl implements LocationService {
         log.info("Location data saved successfully for deviceId: {}", request.getId());
 
         // 8. 최신 위치 데이터를 기반으로 판단 로직 실행 및 결과 반환
-        return processLocationData(request.getId());
+        return processLocationData(request.getId());// deviceId
     }
 
     public List<LocationResponseDTO> processLocationData(Long deviceId) {
