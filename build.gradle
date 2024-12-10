@@ -46,9 +46,8 @@ dependencies {
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
 	// aws 연동 (S3)
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
-	/*implementation 'mysql:mysql-connector-java:8.0.33'
-	implementation 'mysql:mysql-connector-java:8.0.30'*/
-	runtimeOnly 'com.h2database:h2'
+	implementation 'mysql:mysql-connector-java:8.0.33'
+	implementation 'mysql:mysql-connector-java:8.0.30'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	// redis
@@ -69,6 +68,7 @@ dependencies {
 	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
 
 }
 
