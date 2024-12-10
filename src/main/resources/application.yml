@@ -5,7 +5,7 @@ spring:
     import: optional:file:.env[.properties]
     ##import: "optional:classpath:.env"
   datasource:
-      url: jdbc:mysql://${MYSQL_URL}:3306/capDB
+      url: jdbc:mysql://capDB.cbk6kgck2fjy.ap-northeast-2.rds.amazonaws.com:3306/capDB
       username: ${MYSQL_USER}
       password: ${MYSQL_PW}
       driver-class-name: com.mysql.cj.jdbc.Driver
