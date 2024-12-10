@@ -103,14 +103,21 @@ public class LocationServiceImpl implements LocationService {
         List<Location> locations = locationRepository.findByStartTime(latestStartTime);
 
         // 6. Location → LocationResponseDTO 변환 및 반환
+//        return locations.stream()
+//                .map(location -> new LocationResponseDTO(
+//                        location.getId(),
+//                        location.getLatitude(),
+//                        location.getLongitude(),
+//                        location.getVelocity(),
+//                        location.getTime(),
+//                        location.getStartTime()
+//                ))
+//                .collect(Collectors.toList());
         return locations.stream()
                 .map(location -> new LocationResponseDTO(
-                        location.getId(),
                         location.getLatitude(),
                         location.getLongitude(),
-                        location.getVelocity(),
-                        location.getTime(),
-                        location.getStartTime()
+                        location.getTime()
                 ))
                 .collect(Collectors.toList());
     }
