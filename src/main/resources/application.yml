@@ -4,10 +4,10 @@ spring:
   config:
     import: optional:file:.env[.properties]
   datasource:
-      url: jdbc:mysql://capDB.cbk6kgck2fjy.ap-northeast-2.rds.amazonaws.com:3306/capDB
-      username: ${MYSQL_USER}
-      password: ${MYSQL_PW}
-      driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://capDB.cbk6kgck2fjy.ap-northeast-2.rds.amazonaws.com:3306/capDB
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PW}
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
 
 
