@@ -30,7 +30,7 @@ spring:
         hbm2ddl:
           auto: update
         default_batch_fetch_size: 1000
- openai:
+openai:
   model: gpt-4o
   api:
     key: ${OpenAI_API_KEY}
