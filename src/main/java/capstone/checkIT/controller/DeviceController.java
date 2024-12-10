@@ -27,7 +27,7 @@ public class DeviceController {
     }
 
     // Device 조회 한 멤버가 가지고있는 모든 디바이스 정보 반환
-    @GetMapping("/{memberId}")
+    @GetMapping("/member/{memberId}")
     public ApiResponse<List<DeviceResponseDTO>> getDevicesByMemberId(@PathVariable("memberId") Long memberId) {
         List<DeviceResponseDTO> response = deviceService.getDevicesByMemberId(memberId);
         return ApiResponse.onSuccess(response);
