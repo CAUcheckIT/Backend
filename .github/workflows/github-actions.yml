@@ -85,7 +85,7 @@ jobs:
           docker build -f Dockerfile-dev -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}/checkit .
           docker push ${{ secrets.DOCKER_USERNAME }}/checkit
 
-      ## deploy to production
+      ## deploy to production#
       #- name: Deploy to prod
         #uses: appleboy/ssh-action@master
         #id: deploy-prod
