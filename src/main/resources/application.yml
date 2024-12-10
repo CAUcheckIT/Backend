@@ -30,8 +30,8 @@ spring:
         hbm2ddl:
           auto: update
         default_batch_fetch_size: 1000
-openai:
-  model: gpt-4o
-  api:
-    key: ${OpenAI_API_KEY}
-    url: https://api.openai.com/v1/chat/completions
+# openai:
+#  model: gpt-4o
+#  api:
+#    key: ${OpenAI_API_KEY}
+#    url: https://api.openai.com/v1/chat/completions
