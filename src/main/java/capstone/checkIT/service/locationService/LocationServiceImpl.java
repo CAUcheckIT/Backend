@@ -38,9 +38,9 @@ public class LocationServiceImpl implements LocationService {
 
     private static final int MIN_DATA_POINTS = 3;
     private static final int MIN_STATIONARY_POINTS = 5; // stationary 판단 기준 데이터 개수
-    private static final double BUS_SPEED_MIN = 10.0; // 버스 속도 최소값 (km/h)
-    private static final double BUS_SPEED_MAX = 40.0; // 버스 속도 최대값 (km/h)
-    private static final double SUBWAY_SPEED_MIN = 20.0; // 지하철 속도 최소값 (km/h)
+    private static final double BUS_SPEED_MIN = 5.0; // 버스 속도 최소값 (km/h)
+    private static final double BUS_SPEED_MAX = 60.0; // 버스 속도 최대값 (km/h)
+    private static final double SUBWAY_SPEED_MIN = 10.0; // 지하철 속도 최소값 (km/h)
     private static final double SUBWAY_SPEED_MAX = 70.0; // 지하철 속도 최대값 (km/h)
     private static final double SUBWAY_VELOCITY_THRESHOLD = 10.0; // 지하철 속도값 평균 기준
     private static final double LOCATION_TOLERANCE = 0.0005; // 위치 오차 범위 (위도/경도 차이)
@@ -107,20 +107,22 @@ public class LocationServiceImpl implements LocationService {
         // 판단 로직 실행
         String tag = processRecentLocations(recentLocations);
 
-        // 판단된 태그를 업데이트할 데이터만 필터링
+        // 판단된 태그를 업데이트할 데이터 필터링
         List<Location> locationsToUpdate;
-        if ("bus".equals(tag) || "subway".equals(tag)) {
-            // 최근 3개의 태그만 변경
+        if ("stationary".equals(tag)) {
+            // stationary는 최근 5개 데이터만 업데이트
             locationsToUpdate = recentLocations.stream()
-                    .sorted(Comparator.comparing(Location::getTime).reversed()) // 최신순으로 정렬
-                    .limit(MIN_DATA_POINTS) // 상위 3개만 가져옴
+                    .sorted(Comparator.comparing(Location::getTime).reversed()) // 최신순 정렬
+                    .limit(MIN_STATIONARY_POINTS) // 최근 5개 데이터
                     .collect(Collectors.toList());
-        } else if ("stationary".equals(tag)) {
-            // 최근 10개의 태그를 변경 (stationary의 경우)
-            locationsToUpdate = recentLocations;
+        } else if ("bus".equals(tag) || "subway".equals(tag)) {
+            // bus와 subway는 최근 3개 데이터만 업데이트
+            locationsToUpdate = recentLocations.stream()
+                    .sorted(Comparator.comparing(Location::getTime).reversed()) // 최신순 정렬
+                    .limit(MIN_DATA_POINTS) // 최근 3개 데이터
+                    .collect(Collectors.toList());
         } else {
-            // 다른 경우는 태그를 변경하지 않음
-            locationsToUpdate = List.of();
+            locationsToUpdate = List.of(); // unknown은 태그를 변경하지 않음
         }
 
         // 판단된 태그를 각 Location 엔티티에 설정 및 저장
