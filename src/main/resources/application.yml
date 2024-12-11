@@ -39,6 +39,8 @@ cloud:
   aws:
     s3:
       bucket: checkit-bucket
+      path:
+        picture : picture
     region:
       static: ap-northeast-2
     stack:

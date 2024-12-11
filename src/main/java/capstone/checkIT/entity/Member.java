@@ -33,10 +33,13 @@ public class Member extends BaseEntity {
     @Column(nullable = false, length = 512)
     private String email;
 
+    @Column
+    private String userUrl;
+
     @Column(nullable =false, length = 512)
     private String address;
 
-    @Column(nullable=false)
+    @Column
     @Enumerated(EnumType.STRING)
     private Status status;
 
