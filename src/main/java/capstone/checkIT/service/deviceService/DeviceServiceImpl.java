@@ -33,7 +33,7 @@ public class DeviceServiceImpl implements DeviceService {
         Device device = Device.builder()
                 .information(request.getInformation())
                 .name(request.getName())
-                //.isLogin(request.getIsLogin())
+                .isLogin(request.isLogin())
                 .member(member)
                 .build();
 
@@ -43,7 +43,7 @@ public class DeviceServiceImpl implements DeviceService {
                 .id(device.getId())
                 .information(device.getInformation())
                 .name(device.getName())
-                //.isLogin(device.getIsLogin())
+                .isLogin(device.isLogin())
                 .memberId(member.getId())
                 .build();
     }
@@ -91,7 +91,7 @@ public class DeviceServiceImpl implements DeviceService {
                 .id(device.getId())
                 .information(device.getInformation())
                 .name(device.getName())
-                //.isLogin(device.getIsLogin())
+                .isLogin(device.isLogin())
                 .memberId(device.getMember().getId())
                 .build();
     }

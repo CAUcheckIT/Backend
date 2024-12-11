@@ -29,6 +29,9 @@ public class Device extends BaseEntity {
     @Column(nullable = false, length=100)
     private String name;
 
+    @Column(length=100)
+    private boolean isLogin;
+
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="member_id")
     private Member member;
