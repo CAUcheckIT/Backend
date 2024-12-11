@@ -27,7 +27,7 @@ public class MemberRestController {
         return ApiResponse.onSuccess(response);
     }
 
-    @PostMapping("/login")
+    @PostMapping("/logins")
     @Operation(summary="로그인 API",
                 description = "로그인 API - access token 응답")
     public ApiResponse<MemberResponseDTO.LoginResultDTO> login(@RequestBody @Valid MemberRequestDTO.LoginDto request){

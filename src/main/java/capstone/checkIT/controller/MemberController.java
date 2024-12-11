@@ -38,4 +38,14 @@ public class MemberController {
         MemberResponseDTO.MypageDTO mypageDTO = memberService.updateMyInfo(accessToken, myDetailInfoDto);
         return ApiResponse.onSuccess(mypageDTO);
     }
+
+    @PatchMapping("/starts")
+    @Operation(summary = "Start 버튼 시작 API",
+        description = "Start 버튼 시작 API", security = {@SecurityRequirement(name="session-token")})
+    public ApiResponse<String> startButton(HttpServletRequest token) throws Exception {
+        String accessToken = jwtManager.getToken(token);
+
+        memberService.startButton(accessToken);
+        return ApiResponse.onSuccess("Start 버튼 시작 성공");
+    }
 }

@@ -29,11 +29,8 @@ public class Device extends BaseEntity {
     @Column(nullable = false, length=100)
     private String name;
 
-    @Column(nullable = false)
-    private Boolean isLogin;
-
-    @Column(nullable=false)
-    private Boolean isDevice;
+    @Column(length=100)
+    private boolean isLogin;
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="member_id")
