@@ -37,7 +37,3 @@ openai:
   api:
     key: ${OPENAI_API_KEY}
     url: https://api.openai.com/v1/chat/completions
-#logging:
-#  level:
-#    root: INFO # 전체 로그 기본 레벨
-#    capstone.checkIT: DEBUG # 특정 패키지 로그 레벨 (디버
