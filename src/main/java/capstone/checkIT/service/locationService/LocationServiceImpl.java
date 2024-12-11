@@ -138,15 +138,22 @@ public class LocationServiceImpl implements LocationService {
         }
 
         // 판단된 태그를 각 Location 엔티티에 설정 및 저장
-        locationsToUpdate.forEach(location -> {
-            location.setTag(tag); // 판단된 태그 설정
-            locationRepository.save(location); // 저장
-        });
-
-        // 결과 데이터를 LocationResponseDTO로 변환 및 반환
-        return recentLocations.stream()
-                .map(location -> mapToResponse(location, location.getTag())) // 기존 태그 사용
+        List<LocationResponseDTO> updatedLocations = locationsToUpdate.stream()
+                .map(location -> {
+                    String previousTag = location.getTag(); // 기존 태그 저장
+                    location.setTag(tag); // 새로운 태그 설정
+                    locationRepository.save(location); // 저장
+                    // 이전 태그가 null이었을 경우에만 반환
+                    if (previousTag == null) {
+                        return mapToResponse(location, tag);
+                    }
+                    return null; // null 반환
+                })
+                .filter(dto -> dto != null) // null 제거
                 .collect(Collectors.toList());
+
+        // **null → 다른 태그로 변경된 데이터만 반환**
+        return updatedLocations;
     }
 
     public String processRecentLocations(List<Location> recentLocations) {
