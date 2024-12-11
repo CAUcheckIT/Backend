@@ -26,6 +26,7 @@ public class MemberRestController {
         return ApiResponse.onSuccess(response);
     }
 
+
     @PostMapping(value="/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary="이미지 업로드 API",
                 description = "이미지 업로드 API")
@@ -34,7 +35,9 @@ public class MemberRestController {
         return ApiResponse.onSuccess(imageUrl);
     }
 
-    @PostMapping("/login")
+
+    @PostMapping("/logins")
+
     @Operation(summary="로그인 API",
                 description = "로그인 API - access token 응답")
     public ApiResponse<MemberResponseDTO.LoginResultDTO> login(@RequestBody @Valid MemberRequestDTO.LoginDto request){

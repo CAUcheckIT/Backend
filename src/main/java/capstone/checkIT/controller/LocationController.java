@@ -25,12 +25,15 @@ public class LocationController {
 
     // 위치 데이터 저장
     @PostMapping
-    public ApiResponse<String> saveLocation(HttpServletRequest token, @RequestBody LocationRequestDTO request) {
+    public ApiResponse<List<LocationResponseDTO>> saveLocation(HttpServletRequest token, @RequestBody LocationRequestDTO request) {
         String accessToken = jwtManager.getToken(token);
         log.info("Location save request received: {}", request);
-        locationService.saveLocation(accessToken, request);
-        log.info("Location data saved successfully.");
-        return ApiResponse.onSuccess("위치 저장 완료");
+
+        // Service에서 반환된 LocationResponseDTO 리스트를 가져옴
+        List<LocationResponseDTO> response = locationService.saveLocation(accessToken, request);
+
+        log.info("Location data saved and processed successfully.");
+        return ApiResponse.onSuccess(response); // 결과 데이터를 반환
     }
 
     // 가장 최신 경로 반환
