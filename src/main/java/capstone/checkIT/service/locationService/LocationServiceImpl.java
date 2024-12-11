@@ -21,6 +21,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -70,9 +73,10 @@ public class LocationServiceImpl implements LocationService {
                 .latitude(request.getLatitude())
                 .longitude(request.getLongitude())
                 .velocity(request.getVelocity())
-                .time(request.getTime())
+                .time(getCurrentKSTTimestamp()) // KST Timestamp 반환
                 .startTime(member.getStartTime())
                 .build();
+
 
         // 6. Device와 Location의 연관 관계 설정
         DeviceLocation deviceLocation = DeviceLocation.builder()
@@ -89,6 +93,14 @@ public class LocationServiceImpl implements LocationService {
 
         // 8. 최신 위치 데이터를 기반으로 판단 로직 실행 및 결과 반환
         return processLocationData(request.getId());// deviceId
+    }
+
+    public Timestamp getCurrentKSTTimestamp() {
+        // 현재 KST 시간을 가져옴
+        ZonedDateTime kstDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+
+        // KST ZonedDateTime을 Instant로 변환 후 Timestamp로 변환
+        return Timestamp.from(kstDateTime.toInstant());
     }
 
     public List<LocationResponseDTO> processLocationData(Long deviceId) {

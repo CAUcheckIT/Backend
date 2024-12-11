@@ -4,6 +4,7 @@ import capstone.checkIT.DTO.LocationDTO.LocationRequestDTO;
 import capstone.checkIT.DTO.LocationDTO.LocationResponseDTO;
 import capstone.checkIT.entity.Location;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface LocationService {
@@ -26,4 +27,6 @@ public interface LocationService {
     boolean isWithinTolerance(Location a, Location b);
 
     LocationResponseDTO mapToResponse(Location location, String tag);
+
+    Timestamp getCurrentKSTTimestamp();
 }
