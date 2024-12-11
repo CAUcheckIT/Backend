@@ -2,7 +2,7 @@
 name: CI/CD using github actions & docker
 
 # event trigger
-# main이나 develop 브랜치에 push가 되었을 때 실행
+# main이나 develop 브랜치에 push가 되었을 때 실행#
 on:
   push:
     branches: [ "dev" ]
@@ -39,7 +39,7 @@ jobs:
         with:
           files: 'src/main/resources/application.yml'
         env:
-          spring.datasource.url: ${{ secrets.MYSQL_URL }}
+#          spring.datasource.url: ${{ secrets.MYSQL_URL }}
           spring.datasource.username: ${{ secrets.MYSQL_USER }}
           spring.datasource.password: ${{ secrets.MYSQL_PW }}
 
