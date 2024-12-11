@@ -37,10 +37,12 @@ public class LocationServiceImpl implements LocationService {
     private final DeviceLocationRepository deviceLocationRepository;
 
     private static final int MIN_DATA_POINTS = 3;
+    private static final int MIN_STATIONARY_POINTS = 5; // stationary 판단 기준 데이터 개수
     private static final double BUS_SPEED_MIN = 10.0; // 버스 속도 최소값 (km/h)
     private static final double BUS_SPEED_MAX = 40.0; // 버스 속도 최대값 (km/h)
-    private static final double SUBWAY_SPEED_MIN = 30.0; // 지하철 속도 최소값 (km/h)
+    private static final double SUBWAY_SPEED_MIN = 20.0; // 지하철 속도 최소값 (km/h)
     private static final double SUBWAY_SPEED_MAX = 70.0; // 지하철 속도 최대값 (km/h)
+    private static final double SUBWAY_VELOCITY_THRESHOLD = 10.0; // 지하철 속도값 평균 기준
     private static final double LOCATION_TOLERANCE = 0.0005; // 위치 오차 범위 (위도/경도 차이)
 
     @Override
@@ -177,35 +179,62 @@ public class LocationServiceImpl implements LocationService {
         //
         double averageSpeed = (totalDistance / (totalTimeMillis / 1000.0)) * 3.6; // m/s -> km/h
 
+        // 속도 평균 계산
+        double averageVelocity = (first.getVelocity().doubleValue() +
+                second.getVelocity().doubleValue() +
+                third.getVelocity().doubleValue()) / 3;
+
         // 디버깅 출력
         log.info("Distance1: {}, Distance2: {}, TotalDistance: {}", distance1, distance2, totalDistance);
         log.info("TotalTimeMillis: {}, AverageSpeed: {}", totalTimeMillis, averageSpeed);
 
-        return BUS_SPEED_MIN <= averageSpeed && averageSpeed <= BUS_SPEED_MAX;
-    }
+        // 버스 조건 확인
+        return BUS_SPEED_MIN <= averageSpeed && averageSpeed <= BUS_SPEED_MAX &&
+                averageVelocity >= 10.0; // 속도가 10km/h 이상이어야 버스
+         }
 
     public boolean isSubway(List<Location> recentLocations) {
         Location first = recentLocations.get(0);
         Location second = recentLocations.get(1);
         Location third = recentLocations.get(2);
 
-        if (!isWithinTolerance(first, second) || !isWithinTolerance(second, third)) {
-            return false;
-        }
+        double distance1 = calculateDistance(first, second);
+        double distance2 = calculateDistance(second, third);
+        double totalDistance = distance1 + distance2;
 
-        double distance = calculateDistance(first, third);
-        long timeMillis = third.getTime().getTime() - first.getTime().getTime();
-        double averageSpeed = (distance / (timeMillis / 1000.0)) * 3.6; // m/s -> km/h
+        long totalTimeMillis = first.getTime().getTime() - third.getTime().getTime();
+        double averageSpeed = (totalDistance / (totalTimeMillis / 1000.0)) * 3.6; // m/s -> km/h
 
-        return SUBWAY_SPEED_MIN <= averageSpeed && averageSpeed <= SUBWAY_SPEED_MAX;
+        double averageVelocity = (first.getVelocity().doubleValue() +
+                second.getVelocity().doubleValue() +
+                third.getVelocity().doubleValue()) / 3;
+
+        return SUBWAY_SPEED_MIN <= averageSpeed && averageSpeed <= SUBWAY_SPEED_MAX &&
+                averageVelocity <= SUBWAY_VELOCITY_THRESHOLD; // 속도가 10km/h 이하이어야 지하철
     }
 
     public boolean isStationary(List<Location> recentLocations) {
-        Location reference = recentLocations.get(0);
-        for (Location location : recentLocations) {
-            if (!isWithinTolerance(reference, location)) return false;
+        // 데이터가 최소 5개 이상일 때만 stationary 판단 가능
+        if (recentLocations.size() < MIN_STATIONARY_POINTS) {
+            log.info("Not enough data points for stationary check.");
+            return false;
         }
-        return true;
+
+        // 기준 위치(reference)를 첫 번째 데이터로 설정
+        Location reference = recentLocations.get(0);
+
+        // 기준 위치와 비교하여 tolerance 범위에 포함된 데이터 개수 계산
+        long stationaryCount = recentLocations.stream()
+                .filter(location -> isWithinTolerance(reference, location)) // 기준 위치와 비교
+                .count();
+
+        // stationaryCount가 5개 이상이면 stationary로 판단
+        boolean isStationary = stationaryCount >= MIN_STATIONARY_POINTS;
+
+        log.info("Stationary check: TotalCount={}, StationaryCount={}, IsStationary={}",
+                recentLocations.size(), stationaryCount, isStationary);
+
+        return isStationary;
     }
 
     public double calculateDistance(Location a, Location b) {
