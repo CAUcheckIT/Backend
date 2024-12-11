@@ -97,7 +97,8 @@ jobs:
           port: 22
           key: ${{ secrets.PRIVATE_KEY }}
           script: |
-            sudo docker ps
+            sudo docker ps -q --filter "ancestor=${{ secrets.DOCKER_USERNAME }}/checkit" | xargs -r sudo docker stop
+            sudo docker ps -aq --filter "ancestor=${{ secrets.DOCKER_USERNAME }}/checkit" | xargs -r sudo docker rm
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/checkit
             sudo docker run -d -p 8081:8081 ${{ secrets.DOCKER_USERNAME }}/checkit
             sudo docker image prune -f
