@@ -39,6 +39,9 @@ public class Location extends BaseEntity {
     @Column
     private Timestamp time;
 
+    @Column(length = 20)
+    private String tag;
+
     @Column
     private Timestamp startTime;
 

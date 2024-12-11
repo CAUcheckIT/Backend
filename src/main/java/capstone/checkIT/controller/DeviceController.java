@@ -19,7 +19,7 @@ public class DeviceController {
     private final DeviceService deviceService;
 
     // Device 생성
-    @PostMapping
+    @PutMapping("/")
     public ApiResponse<DeviceResponseDTO> createDevice(HttpServletRequest token, @RequestBody DeviceRequestDTO request) {
         String accessToken = jwtManager.getToken(token);
         DeviceResponseDTO response = deviceService.createDevice(accessToken, request);
