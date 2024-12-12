@@ -88,7 +88,7 @@ public class PictureProductServiceImpl implements PictureProductService {
             throw new GeneralException(ErrorStatus.TODO_NOT_FOUND); // 적절한 예외 처리
         }
 
-        todo.setTomorrowImg(productString);
+        todo.setCheckImg(productString);
         todoRepository.save(todo);
     }
 //    // ImageUrl을 만듦
