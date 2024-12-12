@@ -91,7 +91,7 @@ public class TodoController {
         return ApiResponse.onSuccess("삭제 성공");
     }
 
-    @PostMapping("/today/adds/{todoTodayId}")
+    @PostMapping("/today/add/{todoTodayId}")
     @Operation(summary="챙기기 소지품 추가 API",
             description="챙기기 소지품 추가 API",security = {@SecurityRequirement(name="session-token")} )
     public ApiResponse<TodoResponseDTO.TodayResponse> addTodayTodo (HttpServletRequest token, @PathVariable("todoTodayId") Long todoTodayId, String productName) {
