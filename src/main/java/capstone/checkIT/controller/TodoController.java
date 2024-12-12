@@ -64,6 +64,15 @@ public class TodoController {
         return ApiResponse.onSuccess(tomorrowResponse);
     }
 
+    @PostMapping("/today/{todoId}")
+    @Operation(summary="챙기기 소지품 등록 API",
+            description="챙기기 소지품 등록 API",security = {@SecurityRequirement(name="session-token")} )
+    public ApiResponse<TodoResponseDTO.TodayResponse> createTodayTodo (HttpServletRequest token, @PathVariable("todoId") Long todoId) {
+        String accessToken = jwtManager.getToken(token);
+        TodoResponseDTO.TodayResponse todayResponse = todoService.createToday(accessToken, todoId);
+        return ApiResponse.onSuccess(todayResponse);
+    }
+
 
 
 }

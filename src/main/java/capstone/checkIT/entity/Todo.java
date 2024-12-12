@@ -39,4 +39,7 @@ public class Todo extends BaseEntity {
     @OneToMany(mappedBy = "todo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> productList=new ArrayList<>();
 
+    @OneToMany(mappedBy = "todo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TodoToday> todoTodayList=new ArrayList<>();
+
 }

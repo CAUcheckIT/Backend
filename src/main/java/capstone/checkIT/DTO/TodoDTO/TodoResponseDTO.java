@@ -44,6 +44,17 @@ public class TodoResponseDTO {
         private Long id;
         private Long memberId;
         private LocalDate date;
-        private List<Product> productList;
+        private List<TodoTodayResponse> todays;
+
+        @Getter
+        @Setter
+        @AllArgsConstructor
+        public static class TodoTodayResponse {
+
+            private Long todayId;
+
+            private String todayName;
+        }
+
     }
 }
