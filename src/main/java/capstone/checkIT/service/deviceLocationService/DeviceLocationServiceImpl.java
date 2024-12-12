@@ -2,10 +2,12 @@ package capstone.checkIT.service.deviceLocationService;
 
 import capstone.checkIT.apipayLoad.code.status.ErrorStatus;
 import capstone.checkIT.config.JwtManager;
+import capstone.checkIT.entity.Device;
 import capstone.checkIT.entity.Location;
 import capstone.checkIT.entity.Member;
 import capstone.checkIT.exception.GeneralException;
 import capstone.checkIT.repository.DeviceLocationRepository;
+import capstone.checkIT.repository.DeviceRepository;
 import capstone.checkIT.repository.LocationRepository;
 import capstone.checkIT.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,19 +26,15 @@ public class DeviceLocationServiceImpl implements DeviceLocationService{
     private final LocationRepository locationRepository;
     private final JwtManager jwtManager;
     private final MemberRepository memberRepository;
+    private final DeviceRepository deviceRepository;
 
-    public void stopLocation(String accessToken, Timestamp startTime) {
-        log.info("Stopping location tracking for startTime: {}", startTime);
+    public void stopLocation(String accessToken, Long deviceId) {
 
         // 1. JWT 토큰에서 memberId 추출
         Long memberId = jwtManager.validateJwt(accessToken);
 
-        // 2. 해당 memberId의 Location과 DeviceLocation 조회
-        List<Location> locations = locationRepository.findByStartTime(startTime);
-        if (locations.isEmpty()) {
-            throw new GeneralException(ErrorStatus.START_TIME_NOT_FOUND); // 시작 시간에 해당하는 경로가 없는 경우
-        }
-
+        Device device = deviceRepository.findById(deviceId).orElse(null);
+        Timestamp startTime = device.getRecentStartTime();
         // 3. Location과 연결된 DeviceLocation의 isFinished 업데이트
         int updatedRows = deviceLocationRepository.updateIsFinishedByStartTimeAndMemberId(startTime, memberId);
 

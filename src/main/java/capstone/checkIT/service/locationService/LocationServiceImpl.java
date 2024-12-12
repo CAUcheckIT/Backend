@@ -26,6 +26,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -74,7 +75,7 @@ public class LocationServiceImpl implements LocationService {
                 .longitude(request.getLongitude())
                 .velocity(request.getVelocity())
                 .time(getCurrentKSTTimestamp()) // KST Timestamp 반환
-                .startTime(member.getStartTime())
+                .startTime(device.getRecentStartTime())
                 .build();
 
 
@@ -106,8 +107,11 @@ public class LocationServiceImpl implements LocationService {
     public List<LocationResponseDTO> processLocationData(Long deviceId) {
         // 최근 위치 데이터 가져오기: 10개
         Pageable pageable = PageRequest.of(0, 10); // 첫 페이지, 최대 10개
-        List<Location> recentLocations = locationRepository.findLatestLocationsByDeviceId(deviceId, pageable);
-
+        //List<Location> recentLocations = locationRepository.findLatestLocationsByDeviceId(deviceId, pageable);
+        Optional<Device> device = deviceRepository.findById(deviceId);
+        Timestamp startTime = device.get().getRecentStartTime();
+        log.info("device Start time is {}", startTime);
+        List<Location> recentLocations = locationRepository.findLatestLocationsByDeviceIdAndStartTime(deviceId, startTime, pageable);
         // 데이터가 부족하면 모든 데이터에 "unknown" 태그를 유지
         if (recentLocations.size() < MIN_DATA_POINTS) {
             log.info("Not enough location data. Keeping all tags as unknown.");
@@ -296,13 +300,14 @@ public class LocationServiceImpl implements LocationService {
         }
 
         // 4. 가장 최신 startTime 조회
-        Timestamp latestStartTime = locationRepository.findLatestStartTimeByDeviceId(deviceId)
-                .orElseThrow(() -> new GeneralException(ErrorStatus.LOCATION_NOT_FOUND));
+        Timestamp latestStartTime = device.getRecentStartTime();
 
         log.info("Latest startTime found: {}", latestStartTime);
 
         // 5. 최신 startTime과 관련된 Location 리스트 조회
-        List<Location> locations = locationRepository.findByStartTime(latestStartTime);
+        //List<Location> locations = locationRepository.findByStartTime(latestStartTime);
+
+        List<Location> locations = locationRepository.findByStartTimeAndDeviceId(latestStartTime, deviceId);
 
         // 6. Location → LocationResponseDTO 변환 및 반환
 //        return locations.stream()
