@@ -51,6 +51,17 @@ public class PictureProductController {
         return ApiResponse.onSuccess("오늘 사진분석 완료");
     }
 
+    @PostMapping(value="/takeImage", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary="챙기기 사진분석 API",
+            description="챙기기 사진분석 API",security = {@SecurityRequirement(name="session-token")} )
+    public ApiResponse<String> takeImageAnalysis(HttpServletRequest token, @RequestParam("image") MultipartFile image)
+            throws IOException {
+        String accessToken = jwtManager.getToken(token);
+        String fixedRequestText = "이 사진에 있는 물건들이 뭔지 설명없이 키워드만 ,로 구분해서 말해줘";
+        pictureProductService.requestImageAnalysis(accessToken, image, fixedRequestText);
+        return ApiResponse.onSuccess("챙기기 사진분석 완료");
+    }
+
 //    @PostMapping(value="/todayImage", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 //    @Operation(summary="내일 사진분석 API",
 //            description="내일 사진분석 API",security = {@SecurityRequirement(name="session-token")} )
