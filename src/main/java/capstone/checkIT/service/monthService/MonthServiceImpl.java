@@ -35,7 +35,8 @@ public class MonthServiceImpl implements MonthService {
                 .orElseThrow(() -> new GeneralException(ErrorStatus.LOGIN_ERROR_EMAIL));
         Month month =Month.builder()
                 .productName(request.getProductName())
-                .frequency(request.getFrequency())
+                .productSpace(request.getProductSpace())
+                .week(request.getWeek())
                 .member(member)
                 .build();
         monthRepository.save(month);
@@ -44,7 +45,8 @@ public class MonthServiceImpl implements MonthService {
                 .id(month.getId())
                 .memberId(month.getMember().getId())
                 .productName(month.getProductName())
-                .frequency(month.getFrequency())
+                .productSpace(month.getProductSpace())
+                .week(month.getWeek())
                 .build();
     }
     @Override
@@ -57,7 +59,8 @@ public class MonthServiceImpl implements MonthService {
                 .orElseThrow(() -> new GeneralException(ErrorStatus.MONTH_NOT_EXIST));
 
         month.setProductName(request.getProductName());
-        month.setFrequency(request.getFrequency());
+        month.setProductSpace(request.getProductSpace());
+        month.setWeek(request.getWeek());
 
         monthRepository.save(month);
 
@@ -65,7 +68,8 @@ public class MonthServiceImpl implements MonthService {
                 .id(MonthId)
                 .memberId(memberId)
                 .productName(month.getProductName())
-                .frequency(month.getFrequency())
+                .productSpace(month.getProductSpace())
+                .week(month.getWeek())
                 .build();
     }
 
@@ -88,10 +92,11 @@ public class MonthServiceImpl implements MonthService {
 
         return MonthResponseDTO.getMonthDto.builder()
                 .monthId(month.getId())
-               .memberId(month.getMember().getId())
-               .sentence(month.getSentence())
-               .checkDay(month.getCheckDay())
-               .build();
+                .memberId(month.getMember().getId())
+                .productName(month.getProductName())
+                .sentence(month.getSentence())
+                .checkDay(month.getCheckDay())
+                .build();
     }
 
     @Override

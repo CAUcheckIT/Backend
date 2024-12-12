@@ -47,6 +47,14 @@ public class Month extends BaseEntity {
     @Column
     private String productName;
 
+    @Column
+    private String productSpace;
+
+    @ElementCollection
+    @CollectionTable(name = "week_days", joinColumns = @JoinColumn(name = "month_id"))
+    @Column(name = "week_day")
+    private List<String> week = new ArrayList<>();
+
     //별도의 테이블 없이 checkDay 저장
     @ElementCollection
     @CollectionTable(name = "month_check_day", joinColumns = @JoinColumn(name = "month_id"))

@@ -19,7 +19,9 @@ public class MonthResponseDTO {
 
         private String productName;
 
-        private Integer frequency;
+        private String productSpace;
+
+        private List<String> week;
     }
 
     @Builder

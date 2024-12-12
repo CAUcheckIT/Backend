@@ -18,7 +18,8 @@ public class MemberConverter {
                         member.getMonthList().stream()
                                 .map(month -> new MemberResponseDTO.JoinResultDTO.MonthResponse(
                                         month.getProductName(),
-                                        month.getFrequency(),
+                                        month.getProductSpace(),
+                                        month.getWeek(),
                                         month.getSentence()))
                                 .collect(Collectors.toList())
                 )
