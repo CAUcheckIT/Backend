@@ -6,10 +6,12 @@ import capstone.checkIT.config.JwtManager;
 import capstone.checkIT.converter.TodoConverter;
 import capstone.checkIT.entity.Product;
 import capstone.checkIT.entity.Todo;
+import capstone.checkIT.entity.TodoToday;
 import capstone.checkIT.exception.GeneralException;
 import capstone.checkIT.repository.MemberRepository;
 import capstone.checkIT.repository.ProductRepository;
 import capstone.checkIT.repository.TodoRepository;
+import capstone.checkIT.repository.TodoTodayRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,7 @@ public class TodoServiceImpl implements TodoService {
     private final JwtManager jwtManager;
     private final TodoRepository todoRepository;
     private final ProductRepository productRepository;
+    private final TodoTodayRepository todoTodayRepository;
     public TodoResponseDTO.TomorrowResponse getTomorrowList(String accessToken, Long todoId){
         Long memberId = jwtManager.validateJwt(accessToken);
 
@@ -38,6 +41,7 @@ public class TodoServiceImpl implements TodoService {
 
         List<Product> products = productsNames.stream()
                 .map(productName -> Product.builder()
+                        .todo(todo)
                         .name(productName)
                         .build())
                 .toList();
@@ -63,6 +67,7 @@ public class TodoServiceImpl implements TodoService {
         Todo todo = todoRepository.findByIdAndMemberId(todoId, memberId);
 
         Product product = Product.builder()
+                .todo(todo)
                 .name(productName)
                 .build();
 
@@ -81,6 +86,31 @@ public class TodoServiceImpl implements TodoService {
         productRepository.save(product);
 
         return TodoConverter.toProductResponse(product.getTodo());
+    }
+
+    public TodoResponseDTO.TodayResponse getTodayList(String accessToken, Long todoId) {
+        Long memberId = jwtManager.validateJwt(accessToken);
+
+        Todo todo=todoRepository.findByIdAndMemberId(todoId, memberId);
+        return TodoConverter.todayResponse(todo);
+
+    }
+
+    public TodoResponseDTO.TodayResponse createToday(String accessToken, Long todoId) {
+        Long memberId = jwtManager.validateJwt(accessToken);
+
+        Todo todo=todoRepository.findByIdAndMemberId(todoId, memberId);
+        List<String> todaysNames= List.of(todo.getCheckImg().split(","));
+
+        List<TodoToday> todoTodays = todaysNames.stream()
+                .map(todaysName -> TodoToday.builder()
+                        .todo(todo)
+                        .name(todaysName)
+                        .build())
+                .toList();
+        todoTodayRepository.saveAll(todoTodays);
+
+        return TodoConverter.todayResponse(todo);
     }
 
 

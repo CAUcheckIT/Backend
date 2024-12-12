@@ -26,4 +26,20 @@ public class TodoConverter {
 
 
     }
+
+    public static TodoResponseDTO.TodayResponse todayResponse(Todo todo){
+        List<TodoResponseDTO.TodayResponse.TodoTodayResponse> todayResponses=todo.getTodoTodayList().stream()
+                .map(todoToday -> new TodoResponseDTO.TodayResponse.TodoTodayResponse(
+                        todoToday.getId(),
+                        todoToday.getName()
+                ))
+                .toList();
+
+        return TodoResponseDTO.TodayResponse.builder()
+                .id(todo.getId())
+                .memberId(todo.getMember().getId())
+                .date(todo.getDate())
+                .todays(todayResponses)
+                .build();
+    }
 }

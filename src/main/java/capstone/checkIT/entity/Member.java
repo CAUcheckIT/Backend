@@ -63,6 +63,9 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
     private List<Product> productList=new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<TodoToday> todoTodayList=new ArrayList<>();
+
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Month> monthList = new ArrayList<>(); // 빈 리스트로 초기화
 
