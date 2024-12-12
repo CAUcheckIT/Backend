@@ -7,6 +7,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -32,6 +33,6 @@ public class LocationPicture extends BaseEntity {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-//    @OneToMany(mappedBy = "locationPic", cascade = CascadeType.ALL)
-//    private List<LocationProduct> locationProducts = new ArrayList<>();
+    @OneToMany(mappedBy = "locationPic", cascade = CascadeType.ALL)
+    private List<LocationProduct> locationProducts = new ArrayList<>();
 }

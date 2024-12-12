@@ -2,7 +2,9 @@ package capstone.checkIT.controller;
 
 
 import java.io.IOException;
+import java.util.List;
 
+import capstone.checkIT.DTO.LocationPictureDTO;
 import capstone.checkIT.DTO.TodoDTO.TodoResponseDTO;
 import capstone.checkIT.apipayLoad.ApiResponse;
 import capstone.checkIT.config.JwtManager;
@@ -51,6 +53,19 @@ public class PictureProductController {
     }
 
 
+    @PostMapping(value="/locationImage/{todoId}")
+    @Operation(summary="장소 사진분석 API",
+            description="장소 사진분석 API",security = {@SecurityRequirement(name="session-token")} )
+    public ApiResponse<LocationPictureDTO.LocationProductResponseDTO> locationImageAnalysis(
+            HttpServletRequest token,
+            @RequestParam("url") String url,
+            @PathVariable("todoId") Long todoId)
+            throws IOException {
+        String accessToken = jwtManager.getToken(token);
+        String fixedRequestText = "이 사진에 있는 물건들이 뭔지 설명없이 키워드만 ,로 구분해서 띄어쓰기 없이 말해줘";
+        LocationPictureDTO.LocationProductResponseDTO locationResponse = pictureProductService.locationImageAnalysis(accessToken, url, fixedRequestText, todoId);
+        return ApiResponse.onSuccess(locationResponse);
+    }
 
 //text로만 요청
 //    @PostMapping("/text")

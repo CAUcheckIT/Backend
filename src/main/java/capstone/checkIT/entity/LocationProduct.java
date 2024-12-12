@@ -23,9 +23,12 @@ public class LocationProduct extends BaseEntity {
     @JoinColumn(name = "location_pic_id", nullable = false)
     private LocationPicture locationPic;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false, unique = true)
-    private Product product;
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "product_id", nullable = false, unique = true)
+//    private Product product;
+
+    @Column(nullable = false, length=100)
+    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "todo_id", nullable = false)

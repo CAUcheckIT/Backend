@@ -4,27 +4,21 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
+import capstone.checkIT.DTO.LocationPictureDTO;
 import capstone.checkIT.DTO.TodoDTO.TodoResponseDTO;
 import capstone.checkIT.DTO.openAiDTO.request.ChatGPTRequest;
 import capstone.checkIT.DTO.openAiDTO.response.ChatGPTResponse;
 import capstone.checkIT.apipayLoad.code.status.ErrorStatus;
 import capstone.checkIT.config.JwtManager;
+import capstone.checkIT.converter.LocationPictureConverter;
 import capstone.checkIT.converter.TodoConverter;
-import capstone.checkIT.entity.Member;
-import capstone.checkIT.entity.Product;
-import capstone.checkIT.entity.Todo;
-import capstone.checkIT.entity.TodoToday;
+import capstone.checkIT.entity.*;
 import capstone.checkIT.exception.GeneralException;
-import capstone.checkIT.repository.MemberRepository;
-import capstone.checkIT.repository.ProductRepository;
-import capstone.checkIT.repository.TodoRepository;
-import capstone.checkIT.repository.TodoTodayRepository;
+import capstone.checkIT.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -42,6 +36,8 @@ public class PictureProductServiceImpl implements PictureProductService {
     private final MemberRepository memberRepository;
     private final ProductRepository productRepository;
     private final TodoTodayRepository todoTodayRepository;
+    private final LocationPictureRepository locationPictureRepository;
+    private final LocationProductRepository locationProductRepository;
 
 //    public ChatGPTResponse requestTextAnalysis(String requestText) {
 //        ChatGPTRequest request = ChatGPTRequest.createTextRequest(apiModel, 500, "user", requestText);
@@ -123,6 +119,49 @@ public class PictureProductServiceImpl implements PictureProductService {
         return TodoConverter.todayResponse(todo);
 
     }
+
+    public LocationPictureDTO.LocationPictureResponseDTO locationImageAnalysis(String accessToken, String imageUrl, String requestText, Long todoId)  throws IOException{
+
+        // 1. JWT 토큰에서 memberId 추출
+        Long memberId = jwtManager.validateJwt(accessToken);
+
+        // 2. 멤버 검증
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.LOGIN_ERROR_EMAIL));
+
+        ChatGPTRequest request = ChatGPTRequest.createImageRequest(apiModel, 500, "user", requestText, imageUrl);
+        ChatGPTResponse response = template.postForObject(apiUrl, request, ChatGPTResponse.class);
+        String productString = response.getChoices().get(0).getMessage().getContent();
+
+        Todo todo = todoRepository.findByIdAndMemberId(todoId, memberId);
+        if (todo == null) {
+            throw new GeneralException(ErrorStatus.TODO_NOT_FOUND); // 적절한 예외 처리
+        }
+
+        List<String> locationProductNames= List.of(productString.split(","));
+
+        //location pic 만들면서 string 넣고저장
+        LocationPicture locationPicture = LocationPicture.builder()
+                .member(member)
+                .todo(todo)
+                .photoUrl(productString)
+                .build();
+        LocationPicture saveLocationPicture =  locationPictureRepository.save(locationPicture);
+
+        //그 url에 대한 locationProduct 생성
+        List<LocationProduct> locationProducts = locationProductNames.stream()
+                .map(locationProductName -> LocationProduct.builder()
+                        .member(member)
+                        .todo(todo)
+                        .locationPic(saveLocationPicture)
+                        .build())
+                .toList();
+        locationProductRepository.saveAll(locationProducts);
+
+        return LocationPictureConverter.toLocationPictureResponse(locationPicture);
+
+    }
+
 //    // ImageUrl을 만듦
 //    //원래 throws IOException 포함
 //    public ChatGPTResponse requestImageAnalysis(MultipartFile image, String requestText)  throws IOException{
