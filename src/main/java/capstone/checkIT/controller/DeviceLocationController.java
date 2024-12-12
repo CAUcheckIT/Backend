@@ -5,10 +5,7 @@ import capstone.checkIT.config.JwtManager;
 import capstone.checkIT.service.deviceLocationService.DeviceLocationService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 
@@ -20,13 +17,13 @@ public class DeviceLocationController {
     private final DeviceLocationService deviceLocationService;
     private final JwtManager jwtManager;
 
-    @PostMapping("/stop")
+    @PostMapping("/stop/{deviceId}")
     public ApiResponse<String> stopLocation(
             HttpServletRequest token,
-            @RequestParam Timestamp startTime) {
+            @PathVariable("deviceId") Long deviceId) {
 
         String accessToken = jwtManager.getToken(token);
-        deviceLocationService.stopLocation(accessToken, startTime);
+        deviceLocationService.stopLocation(accessToken, deviceId);
         return ApiResponse.onSuccess("경로저장이 종료되었습니다.");
     }
 }

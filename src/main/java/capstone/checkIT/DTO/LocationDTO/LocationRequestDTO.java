@@ -16,3 +16,4 @@ public class LocationRequestDTO {
     private BigDecimal velocity;  // 속도
     private Timestamp time;  // 기록 시간
 }
+
