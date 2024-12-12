@@ -34,8 +34,10 @@ public enum ErrorStatus implements BaseCode {
     //Month
     MONTH_NOT_EXIST(HttpStatus.BAD_REQUEST, "MONTH4001","해당하는 한달 목표가 존재하지 않습니다."),
     // product
-    PRODUCT_NOT_EXIST(HttpStatus.BAD_REQUEST,"PRODUCT4001","해당하는 소지품이 없습니다.");
+    PRODUCT_NOT_EXIST(HttpStatus.BAD_REQUEST,"PRODUCT4001","해당하는 소지품이 없습니다."),
 
+    //Todo
+    TODO_NOT_FOUND(HttpStatus.BAD_REQUEST, "TODO4001", "해당하는 todo가 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
