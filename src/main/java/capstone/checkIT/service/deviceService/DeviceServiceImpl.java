@@ -48,6 +48,7 @@ public class DeviceServiceImpl implements DeviceService {
                 .build();
     }
 
+    
 
     // 멤버가 가지고있는 Device 조회
     public List<DeviceResponseDTO> getDevicesByMemberId(Long memberId) {
