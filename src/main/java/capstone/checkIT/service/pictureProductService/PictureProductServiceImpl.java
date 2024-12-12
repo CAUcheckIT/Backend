@@ -9,6 +9,7 @@ import capstone.checkIT.apipayLoad.code.status.ErrorStatus;
 import capstone.checkIT.config.JwtManager;
 import capstone.checkIT.entity.Member;
 import capstone.checkIT.entity.Todo;
+import capstone.checkIT.entity.TodoToday;
 import capstone.checkIT.exception.GeneralException;
 import capstone.checkIT.repository.MemberRepository;
 import capstone.checkIT.repository.TodoRepository;
@@ -61,6 +62,32 @@ public class PictureProductServiceImpl implements PictureProductService {
                 .date(LocalDate.now())
                 .tomorrowImg(productString)
                 .build();
+        todoRepository.save(todo);
+    }
+
+
+    public void requestTakeImageAnalysis(String accessToken, MultipartFile image, String requestText, Long todoId)  throws IOException{
+
+        // 1. JWT 토큰에서 memberId 추출
+        Long memberId = jwtManager.validateJwt(accessToken);
+
+        // 2. 멤버 검증
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.LOGIN_ERROR_EMAIL));
+
+
+        String base64Image = Base64.encodeBase64String(image.getBytes());
+        String imageUrl = "data:image/jpeg;base64," + base64Image;
+        ChatGPTRequest request = ChatGPTRequest.createImageRequest(apiModel, 500, "user", requestText, imageUrl);
+        ChatGPTResponse response = template.postForObject(apiUrl, request, ChatGPTResponse.class);
+        String productString = response.getChoices().get(0).getMessage().getContent();
+
+        Todo todo = todoRepository.findByIdAndMemberId(todoId, memberId);
+        if (todo == null) {
+            throw new GeneralException(ErrorStatus.TODO_NOT_FOUND); // 적절한 예외 처리
+        }
+
+        todo.setTomorrowImg(productString);
         todoRepository.save(todo);
     }
 //    // ImageUrl을 만듦

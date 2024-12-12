@@ -12,4 +12,5 @@ public interface PictureProductService {
 
     void requestImageAnalysis(String accessToken, MultipartFile image, String requestText)throws IOException;
 
+    void requestTakeImageAnalysis(String accessToken, MultipartFile image, String requestText, Long todoId)  throws IOException;
 }

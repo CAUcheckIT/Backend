@@ -11,10 +11,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
@@ -46,19 +43,19 @@ public class PictureProductController {
     public ApiResponse<String> tomorrowImageAnalysis(HttpServletRequest token, @RequestParam("image") MultipartFile image)
             throws IOException {
         String accessToken = jwtManager.getToken(token);
-        String fixedRequestText = "이 사진에 있는 물건들이 뭔지 설명없이 키워드만 ,로 구분해서 말해줘";
+        String fixedRequestText = "이 사진에 있는 물건들이 뭔지 설명없이 키워드만 ,로 구분해서 띄어쓰기 없이 말해줘";
         pictureProductService.requestImageAnalysis(accessToken, image, fixedRequestText);
         return ApiResponse.onSuccess("오늘 사진분석 완료");
     }
 
-    @PostMapping(value="/takeImage", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value="/takeImage/{todoId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary="챙기기 사진분석 API",
             description="챙기기 사진분석 API",security = {@SecurityRequirement(name="session-token")} )
-    public ApiResponse<String> takeImageAnalysis(HttpServletRequest token, @RequestParam("image") MultipartFile image)
+    public ApiResponse<String> takeImageAnalysis(HttpServletRequest token, @RequestParam("image") MultipartFile image, @PathVariable("todoId") Long todoId)
             throws IOException {
         String accessToken = jwtManager.getToken(token);
-        String fixedRequestText = "이 사진에 있는 물건들이 뭔지 설명없이 키워드만 ,로 구분해서 말해줘";
-        pictureProductService.requestImageAnalysis(accessToken, image, fixedRequestText);
+        String fixedRequestText = "이 사진에 있는 물건들이 뭔지 설명없이 키워드만 ,로 구분해서 띄어쓰기 없이 말해줘";
+        pictureProductService.requestTakeImageAnalysis(accessToken, image, fixedRequestText, todoId);
         return ApiResponse.onSuccess("챙기기 사진분석 완료");
     }
 
