@@ -148,8 +148,27 @@ public class MonthServiceImpl implements MonthService {
                 .checkDay(month.getCheckDay())
                 .build();
 
+    }
 
+    public MonthResponseDTO.getMonthDto updateSentence(String accessToken, Long monthId){
+        Long memberId = jwtManager.validateJwt(accessToken);
+        Month month = monthRepository.findByIdAndMemberId(monthId, memberId)
+               .orElseThrow(() -> new GeneralException(ErrorStatus.MONTH_NOT_EXIST));
 
+        String productName=month.getProductName();
+        String productSpace=month.getProductSpace();
+        List<String> weeks=month.getWeek();
 
+        month.setSentence(weeks+"요일에는 "+productName +"을 "+ productSpace+"에 챙기자!");
+
+        monthRepository.save(month);
+
+        return MonthResponseDTO.getMonthDto.builder()
+                .monthId(month.getId())
+                .memberId(memberId)
+                .productName(month.getProductName())
+                .sentence(month.getSentence())
+                .checkDay(month.getCheckDay())
+                .build();
     }
 }

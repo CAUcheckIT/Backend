@@ -64,4 +64,13 @@ public class MonthController {
         MonthResponseDTO.getMonthDto response = monthService.getMonth(accessToken, monthId);
         return ApiResponse.onSuccess(response);
     }
+
+    @PatchMapping("/sentence/{monthId}")
+    @Operation(summary="한달 목표 문장 API",
+            description="한달 목표 문장 API",security = {@SecurityRequirement(name="session-token")} )
+    public ApiResponse<MonthResponseDTO.getMonthDto> updateSentence(HttpServletRequest token, @PathVariable Long monthId){
+        String accessToken = jwtManager.getToken(token);
+        MonthResponseDTO.getMonthDto response = monthService.updateSentence(accessToken, monthId);
+        return ApiResponse.onSuccess(response);
+    }
 }

@@ -10,4 +10,5 @@ public interface MonthService {
     void deleteMonth (String accessToken, Long MonthId);
     MonthResponseDTO.getMonthDto getMonth(String accessToken, Long MonthId);
     MonthResponseDTO.getMonthDto achieveDay(String accessToken,Long monthId,boolean newIsStart);
+    MonthResponseDTO.getMonthDto updateSentence(String accessToken, Long monthId);
 }
