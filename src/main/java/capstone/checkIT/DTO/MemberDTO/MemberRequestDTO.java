@@ -36,7 +36,9 @@ public class MemberRequestDTO {
         public static class MonthRequest {
             private String productName;
 
-            private Integer frequency;
+            private String productSpace;
+
+            private List<String> week;
         }
 
     }

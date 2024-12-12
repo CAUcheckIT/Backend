@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 public class MonthRequestDTO {
     @Setter
     @Getter
@@ -13,7 +15,9 @@ public class MonthRequestDTO {
 
         private String productName;
 
-        private Integer frequency;
+        private String productSpace;
+
+        private List<String> week;
 
 
     }

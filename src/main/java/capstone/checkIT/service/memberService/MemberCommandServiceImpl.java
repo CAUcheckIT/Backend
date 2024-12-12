@@ -57,7 +57,8 @@ public class MemberCommandServiceImpl implements MemberCommandService{
         request.getMonths().forEach(monthRequest -> {
             Month month = Month.builder()
                     .productName(monthRequest.getProductName())
-                    .frequency(monthRequest.getFrequency())
+                    .productSpace(monthRequest.getProductSpace())
+                    .week(monthRequest.getWeek())
                     .build();
             member.addMonth(month); // Member와 Month 간의 연관관계 설정
         });
