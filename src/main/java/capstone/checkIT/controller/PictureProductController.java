@@ -3,6 +3,7 @@ package capstone.checkIT.controller;
 
 import java.io.IOException;
 
+import capstone.checkIT.DTO.TodoDTO.TodoResponseDTO;
 import capstone.checkIT.apipayLoad.ApiResponse;
 import capstone.checkIT.config.JwtManager;
 import capstone.checkIT.service.pictureProductService.PictureProductService;
@@ -21,54 +22,33 @@ public class PictureProductController {
     private final PictureProductService pictureProductService;
     private final JwtManager jwtManager;
 
-//    @PostMapping("/tomorrowImage")
-//    public String imageAnalysis(@RequestParam MultipartFile image)
-//            throws IOException {
-//        String fixedRequestText = "이 사진에 있는 물건들이 뭔지 설명없이 키워드만 말해줘";
-//        ChatGPTResponse response = pictureProductService.requestImageAnalysis(image, fixedRequestText);
-//        return response.getChoices().get(0).getMessage().getContent();
-//    }
-//
-//    @PostMapping("/takeImage")
-//    public String imageTake(@RequestParam MultipartFile image)
-//            throws IOException {
-//        String fixedRequestText = "이 사진에 있는 물건들이 뭔지 설명없이 키워드만 말해줘";
-//        ChatGPTResponse response = pictureProductService.requestImageAnalysis(image, fixedRequestText);
-//        return response.getChoices().get(0).getMessage().getContent();
-//    }
 
-    @PostMapping(value="/tomorrowImage", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(summary="내일 사진분석 API",
-            description="내일 사진분석 API",security = {@SecurityRequirement(name="session-token")} )
-    public ApiResponse<String> tomorrowImageAnalysis(HttpServletRequest token, @RequestParam("image") MultipartFile image)
-            throws IOException {
+    @PostMapping(value="/tomorrowImage")
+    @Operation(summary = "내일 사진분석 API",
+            description = "내일 사진분석 API", security = {@SecurityRequirement(name = "session-token")})
+    public ApiResponse<TodoResponseDTO.TomorrowResponse> tomorrowImageAnalysis(
+            HttpServletRequest token,
+            @RequestParam("url") String url) throws IOException {
         String accessToken = jwtManager.getToken(token);
         String fixedRequestText = "이 사진에 있는 물건들이 뭔지 설명없이 키워드만 ,로 구분해서 띄어쓰기 없이 말해줘";
-        pictureProductService.requestImageAnalysis(accessToken, image, fixedRequestText);
-        return ApiResponse.onSuccess("오늘 사진분석 완료");
+        TodoResponseDTO.TomorrowResponse tomorrowResponse = pictureProductService.requestImageAnalysis(accessToken, url, fixedRequestText);
+
+        return ApiResponse.onSuccess(tomorrowResponse);
     }
 
-    @PostMapping(value="/takeImage/{todoId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value="/takeImage/{todoId}")
     @Operation(summary="챙기기 사진분석 API",
             description="챙기기 사진분석 API",security = {@SecurityRequirement(name="session-token")} )
-    public ApiResponse<String> takeImageAnalysis(HttpServletRequest token, @RequestParam("image") MultipartFile image, @PathVariable("todoId") Long todoId)
+    public ApiResponse<TodoResponseDTO.TodayResponse> takeImageAnalysis(
+            HttpServletRequest token,
+            @RequestParam("url") String url,
+            @PathVariable("todoId") Long todoId)
             throws IOException {
         String accessToken = jwtManager.getToken(token);
         String fixedRequestText = "이 사진에 있는 물건들이 뭔지 설명없이 키워드만 ,로 구분해서 띄어쓰기 없이 말해줘";
-        pictureProductService.requestTakeImageAnalysis(accessToken, image, fixedRequestText, todoId);
-        return ApiResponse.onSuccess("챙기기 사진분석 완료");
+        TodoResponseDTO.TodayResponse todayResponse = pictureProductService.requestTakeImageAnalysis(accessToken, url, fixedRequestText, todoId);
+        return ApiResponse.onSuccess(todayResponse);
     }
-
-//    @PostMapping(value="/todayImage", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    @Operation(summary="내일 사진분석 API",
-//            description="내일 사진분석 API",security = {@SecurityRequirement(name="session-token")} )
-//    public ApiResponse<String> todayImageAnalysis(HttpServletRequest token, @RequestParam("image") MultipartFile image)
-//            throws IOException {
-//        String accessToken = jwtManager.getToken(token);
-//        String fixedRequestText = "이 사진에 있는 물건들이 뭔지 설명없이 키워드만 말해줘";
-//        pictureProductService.requestImageAnalysis(accessToken, image, fixedRequestText);
-//        return ApiResponse.onSuccess("오늘 사진분석 완료");
-//    }
 
 
 
