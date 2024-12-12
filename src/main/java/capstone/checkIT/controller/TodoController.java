@@ -73,6 +73,48 @@ public class TodoController {
         return ApiResponse.onSuccess(todayResponse);
     }
 
+    @GetMapping("/today/{todoId}")
+    @Operation(summary="챙기기 소지품 목록 조회 API",
+            description="챙기기 소지품 목록 조회 API",security = {@SecurityRequirement(name="session-token")} )
+    public ApiResponse<TodoResponseDTO.TodayResponse> getTodayList (HttpServletRequest token, @PathVariable("todoId") Long todoId) {
+        String accessToken = jwtManager.getToken(token);
+        TodoResponseDTO.TodayResponse todayResponse = todoService.getTodayList(accessToken, todoId);
+        return ApiResponse.onSuccess(todayResponse);
+    }
+
+    @DeleteMapping("/today/{todoTodayId}")
+    @Operation(summary="챙기기 소지품 삭제 API",
+            description="챙기기 소지품 삭제 API",security = {@SecurityRequirement(name="session-token")} )
+    public ApiResponse<String> deleteTodayTodo (HttpServletRequest token, @PathVariable("todoTodayId") Long todoTodayId) {
+        String accessToken = jwtManager.getToken(token);
+        todoService.deleteToday(accessToken, todoTodayId);
+        return ApiResponse.onSuccess("삭제 성공");
+    }
+
+    @PostMapping("/today/add/{todoTodayId}")
+    @Operation(summary="챙기기 소지품 추가 API",
+            description="챙기기 소지품 추가 API",security = {@SecurityRequirement(name="session-token")} )
+    public ApiResponse<TodoResponseDTO.TodayResponse> addTodayTodo (HttpServletRequest token, @PathVariable("todoTodayId") Long todoTodayId, String productName) {
+        String accessToken = jwtManager.getToken(token);
+        TodoResponseDTO.TodayResponse todayResponse = todoService.addToday(accessToken, todoTodayId, productName);
+        return ApiResponse.onSuccess(todayResponse);
+    }
+
+    @PatchMapping("/today/{todoTodayId}")
+    @Operation(summary="챙기기 소지품 수정 API",
+            description="챙기기 소지품 수정 API",security = {@SecurityRequirement(name="session-token")} )
+    public ApiResponse<TodoResponseDTO.TodayResponse> updateTodayTodo (HttpServletRequest token, @PathVariable("todoTodayId") Long todoTodayId, String productName) {
+        String accessToken = jwtManager.getToken(token);
+        TodoResponseDTO.TodayResponse todayResponse = todoService.updateToday(accessToken, todoTodayId, productName);
+        return ApiResponse.onSuccess(todayResponse);
+    }
+
+
+
+
+
+
+
 
 
 }

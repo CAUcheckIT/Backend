@@ -100,18 +100,51 @@ public class TodoServiceImpl implements TodoService {
         Long memberId = jwtManager.validateJwt(accessToken);
 
         Todo todo=todoRepository.findByIdAndMemberId(todoId, memberId);
-        List<String> todaysNames= List.of(todo.getCheckImg().split(","));
+        List<String> todayNames= List.of(todo.getCheckImg().split(","));
 
-        List<TodoToday> todoTodays = todaysNames.stream()
-                .map(todaysName -> TodoToday.builder()
+        List<TodoToday> todoTodays = todayNames.stream()
+                .map(todayName -> TodoToday.builder()
                         .todo(todo)
-                        .name(todaysName)
+                        .name(todayName)
                         .build())
                 .toList();
         todoTodayRepository.saveAll(todoTodays);
 
         return TodoConverter.todayResponse(todo);
     }
+    public void deleteToday(String accessToken, Long todoTodayId){
+        Long memberId = jwtManager.validateJwt(accessToken);
+        TodoToday todoToday = todoTodayRepository.findByMemberIdAndId(memberId, todoTodayId)
+               .orElseThrow(() -> new GeneralException(ErrorStatus.PRODUCT_NOT_EXIST));
 
+        todoTodayRepository.delete(todoToday);
+    }
+
+    public TodoResponseDTO.TodayResponse addToday(String accessToken, Long todoId, String productName){
+        Long memberId = jwtManager.validateJwt(accessToken);
+
+        Todo todo = todoRepository.findByIdAndMemberId(todoId, memberId);
+
+        TodoToday todoToday = TodoToday.builder()
+               .todo(todo)
+               .name(productName)
+               .build();
+
+        todo.getTodoTodayList().add(todoToday);
+        todoRepository.save(todo);
+
+        return TodoConverter.todayResponse(todo);
+    }
+
+    public TodoResponseDTO.TodayResponse updateToday(String accessToken, Long productId, String productName){
+        Long memberId = jwtManager.validateJwt(accessToken);
+        TodoToday todoToday = todoTodayRepository.findByMemberIdAndId(memberId, productId)
+               .orElseThrow(() -> new GeneralException(ErrorStatus.PRODUCT_NOT_EXIST));
+
+        todoToday.setName(productName);
+        todoTodayRepository.save(todoToday);
+
+        return TodoConverter.todayResponse(todoToday.getTodo());
+    }
 
 }
