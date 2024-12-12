@@ -33,7 +33,7 @@ public class Todo extends BaseEntity {
     @Column(nullable = false, length = 512)
     private String tomorrowImg;
 
-    @Column(nullable = false, length = 512)
+    @Column(length = 512)
     private String checkImg;
 
     @OneToMany(mappedBy = "todo", cascade = CascadeType.ALL, orphanRemoval = true)

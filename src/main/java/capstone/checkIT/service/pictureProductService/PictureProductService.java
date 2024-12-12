@@ -8,8 +8,8 @@ import java.io.IOException;
 
 public interface PictureProductService {
 
-    ChatGPTResponse requestTextAnalysis(String requestText);
+    //ChatGPTResponse requestTextAnalysis(String requestText);
 
-    ChatGPTResponse requestImageAnalysis(MultipartFile image, String requestText)throws IOException;
+    void requestImageAnalysis(String accessToken, MultipartFile image, String requestText)throws IOException;
 
 }

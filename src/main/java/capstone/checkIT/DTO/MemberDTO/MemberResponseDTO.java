@@ -14,6 +14,7 @@ public class MemberResponseDTO {
     public static class JoinResultDTO{
         private Long memberId;
         private String name;
+        private String userUrl;
         private LocalDateTime createdAt;
         private List<MonthResponse> months;
 

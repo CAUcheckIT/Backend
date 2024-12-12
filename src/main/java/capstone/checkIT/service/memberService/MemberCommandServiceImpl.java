@@ -3,6 +3,7 @@ package capstone.checkIT.service.memberService;
 import capstone.checkIT.DTO.MemberDTO.MemberResponseDTO;
 import capstone.checkIT.apipayLoad.code.status.ErrorStatus;
 import capstone.checkIT.apipayLoad.handler.TempHandler;
+import capstone.checkIT.aws.s3.AmazonS3Manager;
 import capstone.checkIT.config.JwtManager;
 import capstone.checkIT.converter.MemberConverter;
 import capstone.checkIT.entity.Member;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,7 +31,7 @@ public class MemberCommandServiceImpl implements MemberCommandService{
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
     private final JwtManager jwtManager;
-    private final MonthRepository monthRepository;
+    private final AmazonS3Manager s3Manager;
 
     @Override
     @Transactional
@@ -44,6 +46,7 @@ public class MemberCommandServiceImpl implements MemberCommandService{
                 .password(passwordEncoder.encode(request.getPassword()))
                 .email(request.getEmail())
                 .address(request.getAddress())
+                .userUrl(request.getUserUrl())
                 .isStart(false)
                 .status(ACTIVE)
                 .role(USER)
@@ -70,6 +73,16 @@ public class MemberCommandServiceImpl implements MemberCommandService{
 
     }
 
+    @Override
+    @Transactional
+    public String uploadImage (String directory, MultipartFile image){
+
+        return s3Manager.uploadFile(directory, image);
+
+    }
+
+    @Override
+    @Transactional
     public MemberResponseDTO.LoginResultDTO loginMember(MemberRequestDTO.LoginDto request){
         Member member=memberRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new GeneralException(ErrorStatus.LOGIN_ERROR_EMAIL));

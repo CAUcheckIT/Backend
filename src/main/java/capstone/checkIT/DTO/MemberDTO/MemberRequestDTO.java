@@ -5,6 +5,7 @@ import capstone.checkIT.entity.enums.Status;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +23,7 @@ public class MemberRequestDTO {
 
         private String address;
 
-        private Status status;
-
-        private Role role;
-
-        private Boolean isStart;
+        private String userUrl;
 
 
         @Builder.Default

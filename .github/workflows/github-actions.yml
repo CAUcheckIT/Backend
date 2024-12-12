@@ -86,7 +86,7 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/checkit:latest
           
 
-      ## deploy to develop#
+      ## deploy to develop
       - name: Deploy to dev
         uses: appleboy/ssh-action@master
         id: deploy-dev
@@ -97,8 +97,15 @@ jobs:
           port: 22
           key: ${{ secrets.PRIVATE_KEY }}
           script: |
-            sudo docker ps -q --filter "ancestor=${{ secrets.DOCKER_USERNAME }}/checkit" | xargs -r sudo docker stop
-            sudo docker ps -aq --filter "ancestor=${{ secrets.DOCKER_USERNAME }}/checkit" | xargs -r sudo docker rm
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/checkit
-            sudo docker run -d -p 8081:8081 ${{ secrets.DOCKER_USERNAME }}/checkit
+            # Stop and remove existing container
+            sudo docker stop checkit || true
+            sudo docker rm checkit || true
+            # Pull the latest image
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/checkit || exit 1
+            # Run the new container
+            sudo docker run -d -p 8081:8081 --name checkit ${{ secrets.DOCKER_USERNAME }}/checkit
+            # Clean up unused images
             sudo docker image prune -f
+            # Check logs
+            sudo docker logs checkit
+

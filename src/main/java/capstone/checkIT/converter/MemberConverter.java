@@ -13,6 +13,7 @@ public class MemberConverter {
         return MemberResponseDTO.JoinResultDTO.builder()
                 .memberId(member.getId())
                 .name(member.getName())
+                .userUrl(member.getUserUrl())
                 .createdAt(LocalDateTime.now())
                 .months(
                         member.getMonthList().stream()
@@ -33,9 +34,6 @@ public class MemberConverter {
                 .password(request.getPassword())
                 .email(request.getEmail())
                 .address(request.getAddress())
-                .isStart(request.getIsStart())
-                .status(request.getStatus())
-                .role(request.getRole())
                 .build();
     }
 }
