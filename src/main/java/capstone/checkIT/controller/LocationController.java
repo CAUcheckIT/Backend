@@ -6,6 +6,8 @@ import capstone.checkIT.apipayLoad.ApiResponse;
 import capstone.checkIT.config.JwtManager;
 import capstone.checkIT.service.deviceLocationService.DeviceLocationService;
 import capstone.checkIT.service.locationService.LocationService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +27,8 @@ public class LocationController {
 
     // 위치 데이터 저장
     @PostMapping
+    @Operation(summary="위치데이터 저장 API",
+            description="위치데이터 저장 API",security = {@SecurityRequirement(name="session-token")} )
     public ApiResponse<List<LocationResponseDTO>> saveLocation(HttpServletRequest token, @RequestBody LocationRequestDTO request) {
         String accessToken = jwtManager.getToken(token);
         log.info("Location save request received: {}", request);
@@ -38,6 +42,8 @@ public class LocationController {
 
     // 가장 최신 경로 반환
     @GetMapping("/latest/{deviceId}")
+    @Operation(summary="디바이스의 최긴경로 반환 API",
+            description="디바이스의 최신경로 반환 API",security = {@SecurityRequirement(name="session-token")} )
     public ApiResponse<List<LocationResponseDTO>> getLatestRoute(
             HttpServletRequest token,
             @PathVariable("deviceId") Long deviceId) {
