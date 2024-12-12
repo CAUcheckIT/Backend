@@ -97,19 +97,15 @@ jobs:
           port: 22
           key: ${{ secrets.PRIVATE_KEY }}
           script: |
-        # Stop and remove existing container
+            # Stop and remove existing container
             sudo docker stop checkit || true
             sudo docker rm checkit || true
-      
-      # Pull the latest image
+            # Pull the latest image
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/checkit || exit 1
-
-      # Run the new container
+            # Run the new container
             sudo docker run -d -p 8081:8081 --name checkit ${{ secrets.DOCKER_USERNAME }}/checkit
-
-      # Clean up unused images
+            # Clean up unused images
             sudo docker image prune -f
-
-      # Check logs
+            # Check logs
             sudo docker logs checkit
 
