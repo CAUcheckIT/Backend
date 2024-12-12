@@ -10,6 +10,6 @@ public interface PictureProductService {
 
     //ChatGPTResponse requestTextAnalysis(String requestText);
 
-    String requestImageAnalysis(MultipartFile image, String requestText)throws IOException;
+    void requestImageAnalysis(String accessToken, MultipartFile image, String requestText)throws IOException;
 
 }

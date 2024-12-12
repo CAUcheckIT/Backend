@@ -4,7 +4,12 @@ package capstone.checkIT.controller;
 import java.io.IOException;
 
 import capstone.checkIT.DTO.openAiDTO.response.ChatGPTResponse;
+import capstone.checkIT.apipayLoad.ApiResponse;
+import capstone.checkIT.config.JwtManager;
 import capstone.checkIT.service.pictureProductService.PictureProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class PictureProductController {
     private final PictureProductService pictureProductService;
+    private final JwtManager jwtManager;
 
 //    @PostMapping("/tomorrowImage")
 //    public String imageAnalysis(@RequestParam MultipartFile image)
@@ -34,11 +40,15 @@ public class PictureProductController {
 //        return response.getChoices().get(0).getMessage().getContent();
 //    }
 
-    @PostMapping("/test")
-    public String test(@RequestParam MultipartFile image)
+    @PostMapping("/tomorrowImage")
+    @Operation(summary="사진분석 API",
+            description="사진분석 API",security = {@SecurityRequirement(name="session-token")} )
+    public ApiResponse<String> test(HttpServletRequest token, @RequestParam MultipartFile image)
             throws IOException {
+        String accessToken = jwtManager.getToken(token);
         String fixedRequestText = "이 사진에 있는 물건들이 뭔지 설명없이 키워드만 말해줘";
-        return pictureProductService.requestImageAnalysis(image, fixedRequestText);
+        pictureProductService.requestImageAnalysis(accessToken, image, fixedRequestText);
+        return ApiResponse.onSuccess("오늘 사진분석 완료");
     }
 //text로만 요청
 //    @PostMapping("/text")
