@@ -1,5 +1,8 @@
 package capstone.checkIT.repository;
 
-public interface LocationProductRepository {
-    //있어야하는지 모르겠음 추후 수정
+import capstone.checkIT.entity.LocationProduct;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface LocationProductRepository extends JpaRepository<LocationProduct, Long> {
+
 }
