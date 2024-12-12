@@ -61,6 +61,7 @@ public class PictureProductServiceImpl implements PictureProductService {
                 .member(member)
                 .date(LocalDate.now())
                 .tomorrowImg(productString)
+                .checkImg(productString)
                 .build();
         todoRepository.save(todo);
     }
