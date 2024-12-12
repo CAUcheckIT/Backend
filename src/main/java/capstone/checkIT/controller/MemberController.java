@@ -39,13 +39,13 @@ public class MemberController {
         return ApiResponse.onSuccess(mypageDTO);
     }
 
-    @PatchMapping("/starts")
+    @PatchMapping("/starts/{deviceId}")
     @Operation(summary = "Start 버튼 시작 API",
         description = "Start 버튼 시작 API", security = {@SecurityRequirement(name="session-token")})
-    public ApiResponse<String> startButton(HttpServletRequest token) throws Exception {
+    public ApiResponse<String> startButton(HttpServletRequest token, @PathVariable("deviceId") Long deviceId) throws Exception {
         String accessToken = jwtManager.getToken(token);
 
-        memberService.startButton(accessToken);
+        memberService.startButton(accessToken, deviceId);
         return ApiResponse.onSuccess("Start 버튼 시작 성공");
     }
 }

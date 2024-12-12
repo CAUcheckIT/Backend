@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,9 @@ public class Device extends BaseEntity {
 
     @Column(length=100)
     private boolean isLogin;
+
+    @Column
+    private Timestamp recentStartTime;
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="member_id")
