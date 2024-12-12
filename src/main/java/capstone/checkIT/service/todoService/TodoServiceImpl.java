@@ -34,27 +34,27 @@ public class TodoServiceImpl implements TodoService {
         return TodoConverter.toProductResponse(todo);
     }
 
-    public TodoResponseDTO.TomorrowResponse createTomorrow(String accessToken, Long todoId){
-        Long memberId = jwtManager.validateJwt(accessToken);
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new GeneralException(ErrorStatus.LOGIN_ERROR_EMAIL));
-
-        Todo todo=todoRepository.findByIdAndMemberId(todoId, memberId);
-        List<String> productsNames= List.of(todo.getTomorrowImg().split(","));
-
-        List<Product> products = productsNames.stream()
-                .map(productName -> Product.builder()
-                        .member(member)
-                        .todo(todo)
-                        .name(productName)
-                        .build())
-                .toList();
-        productRepository.saveAll(products);
-
-        return TodoConverter.toProductResponse(todo);
-
-
-    }
+//    public TodoResponseDTO.TomorrowResponse createTomorrow(String accessToken, Long todoId){
+//        Long memberId = jwtManager.validateJwt(accessToken);
+//        Member member = memberRepository.findById(memberId)
+//                .orElseThrow(() -> new GeneralException(ErrorStatus.LOGIN_ERROR_EMAIL));
+//
+//        Todo todo=todoRepository.findByIdAndMemberId(todoId, memberId);
+//        List<String> productsNames= List.of(todo.getTomorrowImg().split(","));
+//
+//        List<Product> products = productsNames.stream()
+//                .map(productName -> Product.builder()
+//                        .member(member)
+//                        .todo(todo)
+//                        .name(productName)
+//                        .build())
+//                .toList();
+//        productRepository.saveAll(products);
+//
+//        return TodoConverter.toProductResponse(todo);
+//
+//
+//    }
 
     public void deleteTomorrow(String accessToken, Long productId){
         Long memberId = jwtManager.validateJwt(accessToken);
@@ -103,25 +103,25 @@ public class TodoServiceImpl implements TodoService {
 
     }
 
-    public TodoResponseDTO.TodayResponse createToday(String accessToken, Long todoId) {
-        Long memberId = jwtManager.validateJwt(accessToken);
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new GeneralException(ErrorStatus.LOGIN_ERROR_EMAIL));
-
-        Todo todo=todoRepository.findByIdAndMemberId(todoId, memberId);
-        List<String> todayNames= List.of(todo.getCheckImg().split(","));
-
-        List<TodoToday> todoTodays = todayNames.stream()
-                .map(todayName -> TodoToday.builder()
-                        .member(member)
-                        .todo(todo)
-                        .name(todayName)
-                        .build())
-                .toList();
-        todoTodayRepository.saveAll(todoTodays);
-
-        return TodoConverter.todayResponse(todo);
-    }
+//    public TodoResponseDTO.TodayResponse createToday(String accessToken, Long todoId) {
+//        Long memberId = jwtManager.validateJwt(accessToken);
+//        Member member = memberRepository.findById(memberId)
+//                .orElseThrow(() -> new GeneralException(ErrorStatus.LOGIN_ERROR_EMAIL));
+//
+//        Todo todo=todoRepository.findByIdAndMemberId(todoId, memberId);
+//        List<String> todayNames= List.of(todo.getCheckImg().split(","));
+//
+//        List<TodoToday> todoTodays = todayNames.stream()
+//                .map(todayName -> TodoToday.builder()
+//                        .member(member)
+//                        .todo(todo)
+//                        .name(todayName)
+//                        .build())
+//                .toList();
+//        todoTodayRepository.saveAll(todoTodays);
+//
+//        return TodoConverter.todayResponse(todo);
+//    }
     public void deleteToday(String accessToken, Long todoTodayId){
         Long memberId = jwtManager.validateJwt(accessToken);
         TodoToday todoToday = todoTodayRepository.findByMemberIdAndId(memberId, todoTodayId)
