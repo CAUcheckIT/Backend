@@ -2,7 +2,6 @@ package capstone.checkIT.controller;
 
 
 import java.io.IOException;
-import java.util.List;
 
 import capstone.checkIT.DTO.LocationPictureDTO;
 import capstone.checkIT.DTO.TodoDTO.TodoResponseDTO;
@@ -13,9 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api")
@@ -56,14 +53,14 @@ public class PictureProductController {
     @PostMapping(value="/locationImage/{todoId}")
     @Operation(summary="장소 사진분석 API",
             description="장소 사진분석 API",security = {@SecurityRequirement(name="session-token")} )
-    public ApiResponse<LocationPictureDTO.LocationProductResponseDTO> locationImageAnalysis(
+    public ApiResponse<LocationPictureDTO.LocationPictureResponseDTO> locationImageAnalysis(
             HttpServletRequest token,
             @RequestParam("url") String url,
             @PathVariable("todoId") Long todoId)
             throws IOException {
         String accessToken = jwtManager.getToken(token);
         String fixedRequestText = "이 사진에 있는 물건들이 뭔지 설명없이 키워드만 ,로 구분해서 띄어쓰기 없이 말해줘";
-        LocationPictureDTO.LocationProductResponseDTO locationResponse = pictureProductService.locationImageAnalysis(accessToken, url, fixedRequestText, todoId);
+        LocationPictureDTO.LocationPictureResponseDTO locationResponse = pictureProductService.locationImageAnalysis(accessToken, url, fixedRequestText, todoId);
         return ApiResponse.onSuccess(locationResponse);
     }
 
