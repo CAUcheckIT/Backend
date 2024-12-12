@@ -82,12 +82,12 @@ public class TodoController {
         return ApiResponse.onSuccess(todayResponse);
     }
 
-    @DeleteMapping("/today/{todoTodayId}")
+    @DeleteMapping("/today/{todoId}")
     @Operation(summary="챙기기 소지품 삭제 API",
             description="챙기기 소지품 삭제 API",security = {@SecurityRequirement(name="session-token")} )
-    public ApiResponse<String> deleteTodayTodo (HttpServletRequest token, @PathVariable("todoTodayId") Long todoTodayId) {
+    public ApiResponse<String> deleteTodayTodo (HttpServletRequest token, @PathVariable("todoId") Long todoId) {
         String accessToken = jwtManager.getToken(token);
-        todoService.deleteToday(accessToken, todoTodayId);
+        todoService.deleteToday(accessToken, todoId);
         return ApiResponse.onSuccess("삭제 성공");
     }
 
