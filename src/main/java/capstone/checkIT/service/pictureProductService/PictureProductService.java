@@ -1,5 +1,6 @@
 package capstone.checkIT.service.pictureProductService;
 
+import capstone.checkIT.DTO.TodoDTO.TodoResponseDTO;
 import capstone.checkIT.DTO.openAiDTO.response.ChatGPTResponse;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,7 +11,7 @@ public interface PictureProductService {
 
     //ChatGPTResponse requestTextAnalysis(String requestText);
 
-    void requestImageAnalysis(String accessToken, MultipartFile image, String requestText)throws IOException;
+    TodoResponseDTO.TomorrowResponse requestImageAnalysis(String accessToken, String imgUrl, String requestText)  throws IOException;
 
-    void requestTakeImageAnalysis(String accessToken, MultipartFile image, String requestText, Long todoId)  throws IOException;
+    TodoResponseDTO.TodayResponse requestTakeImageAnalysis(String accessToken, String imgUrl, String requestText, Long todoId)  throws IOException;
 }
