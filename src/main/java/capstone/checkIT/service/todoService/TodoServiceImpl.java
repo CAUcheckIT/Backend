@@ -4,6 +4,7 @@ import capstone.checkIT.DTO.TodoDTO.TodoResponseDTO;
 import capstone.checkIT.apipayLoad.code.status.ErrorStatus;
 import capstone.checkIT.config.JwtManager;
 import capstone.checkIT.converter.TodoConverter;
+import capstone.checkIT.entity.Member;
 import capstone.checkIT.entity.Product;
 import capstone.checkIT.entity.Todo;
 import capstone.checkIT.entity.TodoToday;
@@ -35,12 +36,15 @@ public class TodoServiceImpl implements TodoService {
 
     public TodoResponseDTO.TomorrowResponse createTomorrow(String accessToken, Long todoId){
         Long memberId = jwtManager.validateJwt(accessToken);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.LOGIN_ERROR_EMAIL));
 
         Todo todo=todoRepository.findByIdAndMemberId(todoId, memberId);
         List<String> productsNames= List.of(todo.getTomorrowImg().split(","));
 
         List<Product> products = productsNames.stream()
                 .map(productName -> Product.builder()
+                        .member(member)
                         .todo(todo)
                         .name(productName)
                         .build())
@@ -63,10 +67,13 @@ public class TodoServiceImpl implements TodoService {
 
     public TodoResponseDTO.TomorrowResponse addTomorrow(String accessToken, Long todoId, String productName) {
         Long memberId = jwtManager.validateJwt(accessToken);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.LOGIN_ERROR_EMAIL));
 
         Todo todo = todoRepository.findByIdAndMemberId(todoId, memberId);
 
         Product product = Product.builder()
+                .member(member)
                 .todo(todo)
                 .name(productName)
                 .build();
@@ -98,20 +105,59 @@ public class TodoServiceImpl implements TodoService {
 
     public TodoResponseDTO.TodayResponse createToday(String accessToken, Long todoId) {
         Long memberId = jwtManager.validateJwt(accessToken);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.LOGIN_ERROR_EMAIL));
 
         Todo todo=todoRepository.findByIdAndMemberId(todoId, memberId);
-        List<String> todaysNames= List.of(todo.getCheckImg().split(","));
+        List<String> todayNames= List.of(todo.getCheckImg().split(","));
 
-        List<TodoToday> todoTodays = todaysNames.stream()
-                .map(todaysName -> TodoToday.builder()
+        List<TodoToday> todoTodays = todayNames.stream()
+                .map(todayName -> TodoToday.builder()
+                        .member(member)
                         .todo(todo)
-                        .name(todaysName)
+                        .name(todayName)
                         .build())
                 .toList();
         todoTodayRepository.saveAll(todoTodays);
 
         return TodoConverter.todayResponse(todo);
     }
+    public void deleteToday(String accessToken, Long todoTodayId){
+        Long memberId = jwtManager.validateJwt(accessToken);
+        TodoToday todoToday = todoTodayRepository.findByMemberIdAndId(memberId, todoTodayId)
+               .orElseThrow(() -> new GeneralException(ErrorStatus.PRODUCT_NOT_EXIST));
 
+        todoTodayRepository.delete(todoToday);
+    }
+
+    public TodoResponseDTO.TodayResponse addToday(String accessToken, Long todoId, String productName){
+        Long memberId = jwtManager.validateJwt(accessToken);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.LOGIN_ERROR_EMAIL));
+
+        Todo todo = todoRepository.findByIdAndMemberId(todoId, memberId);
+
+        TodoToday todoToday = TodoToday.builder()
+                .member(member)
+                .todo(todo)
+                .name(productName)
+                .build();
+
+        todo.getTodoTodayList().add(todoToday);
+        todoRepository.save(todo);
+
+        return TodoConverter.todayResponse(todo);
+    }
+
+    public TodoResponseDTO.TodayResponse updateToday(String accessToken, Long productId, String productName){
+        Long memberId = jwtManager.validateJwt(accessToken);
+        TodoToday todoToday = todoTodayRepository.findByMemberIdAndId(memberId, productId)
+               .orElseThrow(() -> new GeneralException(ErrorStatus.PRODUCT_NOT_EXIST));
+
+        todoToday.setName(productName);
+        todoTodayRepository.save(todoToday);
+
+        return TodoConverter.todayResponse(todoToday.getTodo());
+    }
 
 }
