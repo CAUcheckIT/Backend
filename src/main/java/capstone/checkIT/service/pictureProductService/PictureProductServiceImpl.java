@@ -22,17 +22,25 @@ public class PictureProductServiceImpl implements PictureProductService {
 
     private final RestTemplate template;
 
-    public ChatGPTResponse requestTextAnalysis(String requestText) {
-        ChatGPTRequest request = ChatGPTRequest.createTextRequest(apiModel, 500, "user", requestText);
-        return template.postForObject(apiUrl, request, ChatGPTResponse.class);
-    }
+//    public ChatGPTResponse requestTextAnalysis(String requestText) {
+//        ChatGPTRequest request = ChatGPTRequest.createTextRequest(apiModel, 500, "user", requestText);
+//        return template.postForObject(apiUrl, request, ChatGPTResponse.class);
+//    }
 
     // ImageUrl을 만듦
-    //원래 throws IOException 포함
-    public ChatGPTResponse requestImageAnalysis(MultipartFile image, String requestText)  throws IOException{
+    public String requestImageAnalysis(MultipartFile image, String requestText)  throws IOException{
         String base64Image = Base64.encodeBase64String(image.getBytes());
         String imageUrl = "data:image/jpeg;base64," + base64Image;
         ChatGPTRequest request = ChatGPTRequest.createImageRequest(apiModel, 500, "user", requestText, imageUrl);
-        return template.postForObject(apiUrl, request, ChatGPTResponse.class);
+        ChatGPTResponse response = template.postForObject(apiUrl, request, ChatGPTResponse.class);
+        return response.getChoices().get(0).getMessage().getContent();
     }
+//    // ImageUrl을 만듦
+//    //원래 throws IOException 포함
+//    public ChatGPTResponse requestImageAnalysis(MultipartFile image, String requestText)  throws IOException{
+//        String base64Image = Base64.encodeBase64String(image.getBytes());
+//        String imageUrl = "data:image/jpeg;base64," + base64Image;
+//        ChatGPTRequest request = ChatGPTRequest.createImageRequest(apiModel, 500, "user", requestText, imageUrl);
+//        return template.postForObject(apiUrl, request, ChatGPTResponse.class);
+//    }
 }

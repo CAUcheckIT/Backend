@@ -18,12 +18,27 @@ import org.springframework.web.multipart.MultipartFile;
 public class PictureProductController {
     private final PictureProductService pictureProductService;
 
-    @PostMapping("/image")
-    public String imageAnalysis(@RequestParam MultipartFile image)
+//    @PostMapping("/tomorrowImage")
+//    public String imageAnalysis(@RequestParam MultipartFile image)
+//            throws IOException {
+//        String fixedRequestText = "이 사진에 있는 물건들이 뭔지 설명없이 키워드만 말해줘";
+//        ChatGPTResponse response = pictureProductService.requestImageAnalysis(image, fixedRequestText);
+//        return response.getChoices().get(0).getMessage().getContent();
+//    }
+//
+//    @PostMapping("/takeImage")
+//    public String imageTake(@RequestParam MultipartFile image)
+//            throws IOException {
+//        String fixedRequestText = "이 사진에 있는 물건들이 뭔지 설명없이 키워드만 말해줘";
+//        ChatGPTResponse response = pictureProductService.requestImageAnalysis(image, fixedRequestText);
+//        return response.getChoices().get(0).getMessage().getContent();
+//    }
+
+    @PostMapping("/test")
+    public String test(@RequestParam MultipartFile image)
             throws IOException {
         String fixedRequestText = "이 사진에 있는 물건들이 뭔지 설명없이 키워드만 말해줘";
-        ChatGPTResponse response = pictureProductService.requestImageAnalysis(image, fixedRequestText);
-        return response.getChoices().get(0).getMessage().getContent();
+        return pictureProductService.requestImageAnalysis(image, fixedRequestText);
     }
 //text로만 요청
 //    @PostMapping("/text")
