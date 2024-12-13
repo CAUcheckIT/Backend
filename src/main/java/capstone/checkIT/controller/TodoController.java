@@ -27,14 +27,14 @@ public class TodoController {
         return ApiResponse.onSuccess(tomorrowResponse);
     }
 
-//    @PostMapping("/tomorrow/{todoId}")
-//    @Operation(summary="내일 소지품 등록 API",
-//            description="내일 소지품 등록 API",security = {@SecurityRequirement(name="session-token")} )
-//    public ApiResponse<TodoResponseDTO.TomorrowResponse> createTomorrowTodo (HttpServletRequest token, @PathVariable("todoId") Long todoId) {
-//        String accessToken = jwtManager.getToken(token);
-//        TodoResponseDTO.TomorrowResponse tomorrowResponse =todoService.createTomorrow(accessToken, todoId);
-//        return ApiResponse.onSuccess(tomorrowResponse);
-//    }
+    @PostMapping("/tomorrow/{todoId}")
+    @Operation(summary="내일 소지품 등록 API",
+            description="내일 소지품 등록 API",security = {@SecurityRequirement(name="session-token")} )
+    public ApiResponse<TodoResponseDTO.TomorrowResponse> createTomorrowTodo (HttpServletRequest token, @PathVariable("todoId") Long todoId) {
+        String accessToken = jwtManager.getToken(token);
+        TodoResponseDTO.TomorrowResponse tomorrowResponse =todoService.createTomorrow(accessToken, todoId);
+        return ApiResponse.onSuccess(tomorrowResponse);
+    }
 
     @DeleteMapping("/tomorrow/{productId}")
     @Operation(summary="내일 소지품 삭제 API",
@@ -64,14 +64,14 @@ public class TodoController {
         return ApiResponse.onSuccess(tomorrowResponse);
     }
 
-//    @PostMapping("/today/{todoId}")
-//    @Operation(summary="챙기기 소지품 등록 API",
-//            description="챙기기 소지품 등록 API",security = {@SecurityRequirement(name="session-token")} )
-//    public ApiResponse<TodoResponseDTO.TodayResponse> createTodayTodo (HttpServletRequest token, @PathVariable("todoId") Long todoId) {
-//        String accessToken = jwtManager.getToken(token);
-//        TodoResponseDTO.TodayResponse todayResponse = todoService.createToday(accessToken, todoId);
-//        return ApiResponse.onSuccess(todayResponse);
-//    }
+    @PostMapping("/today/{todoId}")
+    @Operation(summary="챙기기 소지품 등록 API",
+            description="챙기기 소지품 등록 API",security = {@SecurityRequirement(name="session-token")} )
+    public ApiResponse<TodoResponseDTO.TodayResponse> createTodayTodo (HttpServletRequest token, @PathVariable("todoId") Long todoId) {
+        String accessToken = jwtManager.getToken(token);
+        TodoResponseDTO.TodayResponse todayResponse = todoService.createToday(accessToken, todoId);
+        return ApiResponse.onSuccess(todayResponse);
+    }
 
     @GetMapping("/today/{todoId}")
     @Operation(summary="챙기기 소지품 목록 조회 API",
