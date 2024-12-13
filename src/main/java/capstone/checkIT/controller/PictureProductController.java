@@ -48,7 +48,7 @@ public class PictureProductController {
         return ApiResponse.onSuccess(todoId.toString());
     }
 
-    @PostMapping(value="/takeImage/{todoId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping("/takeImage/{todoId}")
     @Operation(summary="챙기기 사진분석 API",
             description="챙기기 사진분석 API",security = {@SecurityRequirement(name="session-token")} )
     public ApiResponse<String> takeImageAnalysis(HttpServletRequest token, @RequestParam("image") String imageUrl, @PathVariable("todoId") Long todoId)
